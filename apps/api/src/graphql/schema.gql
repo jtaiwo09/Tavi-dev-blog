@@ -1,0 +1,259 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Category {
+  id: Int!
+  name: String!
+  slug: String!
+  description: String
+  posts: [Post!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Like {
+  id: Int!
+  user: User!
+  post: Post!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type User {
+  id: Int!
+  name: String!
+  email: String!
+  bio: String
+  avatar: String
+  posts: [Post!]!
+  likes: [Like!]!
+  comments: [CommentEntity!]!
+  status: UserStatus
+  isEmailVerified: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""The current status of a user account."""
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DEACTIVATED
+}
+
+type CommentEntity {
+  id: Int!
+  content: String!
+  post: Post!
+  author: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Tag {
+  id: Int!
+  name: String!
+  posts: [Post!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Count {
+  likes: Int!
+  comments: Int!
+}
+
+type Post {
+  id: Int!
+  title: String!
+  excerpt: String
+  slug: String
+  thumbnail: String
+  content: String!
+  publishedAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  comments: [CommentEntity!]!
+  tags: [Tag!]!
+  author: User!
+  category: Category!
+  wordCount: Int!
+  readingTimeMinutes: Int!
+  status: PostStatus!
+  _count: Count!
+}
+
+"""The publication status of a post"""
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+}
+
+type PostsResponse {
+  posts: [Post!]!
+  total: Int!
+}
+
+type PostStats {
+  total: Int!
+  published: Int!
+  drafts: Int!
+}
+
+type UserPostsResponse {
+  posts: [Post!]!
+  stats: PostStats!
+}
+
+type UserMessageResponse {
+  message: String!
+}
+
+type AuthResponse {
+  user: User!
+  accessToken: String!
+}
+
+type MessageResponse {
+  message: String!
+}
+
+type Query {
+  posts(skip: Int = 0, take: Int = 12, filters: PostFiltersInput): PostsResponse!
+  getPostById(id: Int!): Post!
+  getUserPosts(skip: Int, take: Int, status: PostStatus): UserPostsResponse!
+  userPostCount: Int!
+  users: [User!]!
+  user: User!
+  getPostComments(postId: Int!, take: Int = 12, skip: Int = 0): [CommentEntity!]!
+  postCommentCount(postId: Int!): Int!
+  tag(id: Int!): Tag!
+  postLikesCount(postId: Int!): Int!
+  userLikedPost(postId: Int!): Boolean!
+  categories: [Category!]!
+  category(id: Int!): Category!
+}
+
+input PostFiltersInput {
+  categoryId: Int
+  tag: String
+  search: String
+}
+
+type Mutation {
+  createPost(createPostInput: CreatePostInput!): Post!
+  updatePost(updatePostInput: UpdatePostInput!): Post!
+  deletePost(postId: Int!): Boolean!
+  createUser(createUserInput: CreateUserInput!): User!
+  updateProfile(input: UpdateUserInput!): User!
+  deactivateAccount: Boolean!
+  changePassword(input: ChangePasswordInput!): UserMessageResponse!
+  createComment(createCommentInput: CreateCommentInput!): CommentEntity!
+  createTag(createTagInput: CreateTagInput!): Tag!
+  updateTag(updateTagInput: UpdateTagInput!): Tag!
+  removeTag(id: Int!): Tag!
+  likePost(postId: Int!): Boolean!
+  unlikePost(postId: Int!): Boolean!
+  signIn(signInInput: SignInInput!): AuthResponse!
+  signUp(signUpInput: SignUpInput!): MessageResponse!
+  verifyEmail(token: String!): MessageResponse!
+  forgotPassword(forgotPasswordInput: ForgotPasswordInput!): MessageResponse!
+  resetPassword(resetPasswordInput: ResetPasswordInput!): MessageResponse!
+  resendVerificationEmail(email: String!): MessageResponse!
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  removeCategory(id: Int!): Category!
+}
+
+input CreatePostInput {
+  title: String!
+  excerpt: String
+  content: String!
+  categoryId: Int!
+  status: PostStatus! = DRAFT
+  tags: [String!]
+  thumbnail: String
+}
+
+input UpdatePostInput {
+  title: String
+  excerpt: String
+  content: String
+  categoryId: Int
+  status: PostStatus = DRAFT
+  tags: [String!]
+  thumbnail: String
+  postId: Int!
+}
+
+input CreateUserInput {
+  email: String!
+  name: String!
+  password: String!
+  bio: String
+  avatar: String
+}
+
+input UpdateUserInput {
+  name: String
+  bio: String
+  avatar: String
+}
+
+input ChangePasswordInput {
+  currentPassword: String!
+  newPassword: String!
+}
+
+input CreateCommentInput {
+  postId: Int!
+  content: String!
+}
+
+input CreateTagInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateTagInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input SignInInput {
+  email: String!
+  password: String!
+}
+
+input SignUpInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+input ForgotPasswordInput {
+  email: String!
+}
+
+input ResetPasswordInput {
+  token: String!
+  password: String!
+}
+
+input CreateCategoryInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateCategoryInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
