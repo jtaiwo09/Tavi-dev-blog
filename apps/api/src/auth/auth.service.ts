@@ -381,6 +381,7 @@ export class AuthService {
     return {
       user: sanitizeUser(user),
       accessToken,
+      message: 'Signed in successfully!',
     };
   }
 

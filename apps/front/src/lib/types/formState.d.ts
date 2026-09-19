@@ -43,7 +43,7 @@ export type CreateCommentFormState =
         content?: string[];
       };
       message?: string;
-      ok?: boolean;
+      success?: boolean;
       open?: boolean;
     }
   | undefined;
@@ -74,7 +74,7 @@ export type PostFormState =
       };
 
       message?: string;
-      ok?: boolean;
+      success?: boolean;
     }
   | undefined;
 

@@ -32,27 +32,22 @@ const InterceptorDeletePostPage = (props: Props) => {
   const [isOpen, setIsOpen] = useState(true);
   const [isPending, startTransition] = useTransition();
 
-  const handleClose = () => {
+  const handleOpenChange = (open: boolean) => {
+    if (open || isPending) return; // ignore closes while deleting
     setIsOpen(false);
     router.back();
   };
 
-  const handleDelete = () => {
+  const handleDelete = (e: React.MouseEvent) => {
+    e.preventDefault();
     startTransition(async () => {
       await deletePost(postId);
-      handleClose();
+      handleOpenChange(false);
     });
   };
 
   return (
-    <AlertDialog
-      open={isOpen}
-      onOpenChange={(open) => {
-        if (!open) {
-          handleClose();
-        }
-      }}
-    >
+    <AlertDialog open={isOpen} onOpenChange={handleOpenChange}>
       <AlertDialogContent className="max-w-md rounded-xl border-border bg-background p-0 shadow-xl">
         <div className="p-6 sm:p-7">
           <AlertDialogHeader>
@@ -78,35 +73,19 @@ const InterceptorDeletePostPage = (props: Props) => {
             </AlertDialogDescription>
           </AlertDialogHeader>
 
-          {/* Warning */}
-          <div className="mt-6 border-y border-border py-4">
-            <div className="flex items-start gap-3">
-              <AlertTriangle
-                className="mt-0.5 size-4 shrink-0 text-destructive"
-                aria-hidden="true"
-              />
-
-              <p className="text-xs leading-5 text-muted-foreground">
-                Comments, likes, and other data associated with this post will
-                also be removed.
-              </p>
-            </div>
-          </div>
-
           {/* Actions */}
           <AlertDialogFooter className="mt-6 flex-col-reverse gap-2 sm:flex-row sm:justify-end">
             <AlertDialogCancel asChild>
               <Button
                 variant="outline"
                 className="w-full shadow-none sm:w-auto"
-                onClick={handleClose}
                 disabled={isPending}
               >
                 Cancel
               </Button>
             </AlertDialogCancel>
 
-            <AlertDialogAction asChild>
+            <AlertDialogAction asChild variant="destructive">
               <Button
                 variant="destructive"
                 className="w-full shadow-none sm:w-auto"

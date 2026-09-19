@@ -5,6 +5,7 @@ import { CreateCommentInput } from './dto/create-comment.input';
 import { DEFAULT_PAGE_SIZE } from 'src/constants';
 import { Public } from 'src/common/decorators/public.decorator';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { MessageResponse } from 'src/common/dto/message-response.dto';
 
 @Resolver(() => CommentEntity)
 export class CommentResolver {
@@ -36,7 +37,7 @@ export class CommentResolver {
     return this.commentService.count(postId);
   }
 
-  @Mutation(() => CommentEntity)
+  @Mutation(() => MessageResponse)
   createComment(
     @CurrentUser('sub') authorId: number,
     @Args('createCommentInput') createCommentInput: CreateCommentInput,

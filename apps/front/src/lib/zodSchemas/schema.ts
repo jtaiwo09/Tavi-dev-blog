@@ -94,6 +94,7 @@ export const CommentFormSchema = z.object({
     .refine((value) => Number.isInteger(value) && value > 0, {
       message: "Invalid post",
     }),
+  slug: z.string().optional(),
 });
 
 export const SignUpFormSchema = z.object({

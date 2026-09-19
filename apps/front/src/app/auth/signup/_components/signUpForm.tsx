@@ -16,8 +16,12 @@ const SignUpForm = () => {
   const [state, action, pending] = useActionState(signUp, undefined);
 
   useEffect(() => {
-    if (state?.message) {
-      toast(state.message);
+    if (!state?.message) return;
+
+    if (state.success) {
+      toast.success(state.message);
+    } else {
+      toast.error(state.message);
     }
   }, [state]);
 

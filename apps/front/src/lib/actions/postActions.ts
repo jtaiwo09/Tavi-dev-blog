@@ -18,6 +18,7 @@ import { uploadThumbnail } from "@/lib/upload";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import type { PostFilters } from "@/lib/types/post";
+import { getErrorMessage } from "../utils";
 
 export const fetchPosts = async ({
   page,
@@ -91,6 +92,7 @@ export async function saveNewPost(
     return {
       data: rawData,
       errors: validatedFields.error.flatten().fieldErrors,
+      success: false,
     };
   }
 
@@ -108,26 +110,31 @@ export async function saveNewPost(
       thumbnailUrl = await uploadThumbnail(thumbnail);
     }
 
-    await authFetchGraphQL(print(CREATE_POST_MUTATION), {
+    const data = await authFetchGraphQL(print(CREATE_POST_MUTATION), {
       input: {
         ...postInput,
-
         thumbnail: thumbnailUrl,
       },
     });
 
     revalidatePath("/user/posts");
+
+    return {
+      message: data.createPost.message,
+      success: true,
+    };
   } catch (error) {
     console.error("Failed to create post:", error);
 
     return {
-      message: "Something went wrong while saving your post. Please try again.",
-
+      message: getErrorMessage(
+        error,
+        "Something went wrong while saving your post. Please try again.",
+      ),
       data: rawData,
+      success: false,
     };
   }
-
-  redirect("/user/posts");
 }
 
 export async function updatePost(
@@ -187,27 +194,23 @@ export async function updatePost(
       input,
     });
 
-    if (!data) {
-      return {
-        message: "We couldn't update your post. Please try again.",
-
-        data: rawData,
-      };
-    }
-
     revalidatePath("/user/posts");
+
+    return {
+      message: data.updatePost.message,
+      success: true,
+    };
   } catch (error) {
     console.error("Failed to update post:", error);
 
     return {
-      message:
+      message: getErrorMessage(
+        error,
         "Something went wrong while updating your post. Please try again.",
-
+      ),
       data: rawData,
     };
   }
-
-  redirect("/user/posts");
 }
 
 export async function deletePost(postId: number) {

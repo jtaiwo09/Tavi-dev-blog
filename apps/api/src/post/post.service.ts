@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -226,6 +227,7 @@ export class PostService {
     createPostInput: CreatePostInput;
     authorId: number;
   }) {
+    // 1. Validate Category Existence
     const category = await this.prisma.category.findUnique({
       where: {
         id: createPostInput.categoryId,
@@ -236,36 +238,32 @@ export class PostService {
       throw new BadRequestException('The selected category does not exist.');
     }
 
-    /**
-     * Calculate article metadata on the backend.
-     */
+    // 2. Calculate Reading Metadata
     const { wordCount, readingTimeMinutes } = calculateArticleStats(
       createPostInput.content,
     );
 
+    // 3. Determine Publication Status and Date
     const status = createPostInput.status ?? PostStatus.DRAFT;
-
     const publishedAt = status === PostStatus.PUBLISHED ? new Date() : null;
 
-    return this.prisma.post.create({
+    // 4. Generate Unique Slug (Prevents P2002 Unique Constraint Failures)
+    const baseSlug = slugify(createPostInput.title);
+    const uniqueSuffix = Math.random().toString(36).substring(2, 7);
+    const slug = `${baseSlug}-${uniqueSuffix}`;
+
+    // 5. Create Post Record in Database
+    const post = await this.prisma.post.create({
       data: {
         title: createPostInput.title,
-
         excerpt: createPostInput.excerpt ?? null,
-
         content: createPostInput.content,
-
         status,
-
         publishedAt,
-
         wordCount,
-
         readingTimeMinutes,
-
         thumbnail: createPostInput.thumbnail ?? null,
-
-        slug: slugify(createPostInput.title),
+        slug,
 
         category: {
           connect: {
@@ -282,13 +280,8 @@ export class PostService {
         tags: createPostInput.tags?.length
           ? {
               connectOrCreate: createPostInput.tags.map((name) => ({
-                where: {
-                  name,
-                },
-
-                create: {
-                  name,
-                },
+                where: { name },
+                create: { name },
               })),
             }
           : undefined,
@@ -298,7 +291,6 @@ export class PostService {
         author: true,
         category: true,
         tags: true,
-
         _count: {
           select: {
             likes: true,
@@ -307,6 +299,15 @@ export class PostService {
         },
       },
     });
+
+    const message =
+      status === PostStatus.PUBLISHED
+        ? 'Post published successfully!'
+        : 'Draft saved successfully!';
+
+    return {
+      message,
+    };
   }
 
   async update({
@@ -316,89 +317,77 @@ export class PostService {
     userId: number;
     updatePostInput: UpdatePostInput;
   }) {
+    // 1. Check if post exists
     const existingPost = await this.prisma.post.findUnique({
       where: {
         id: updatePostInput.postId,
-        authorId: userId,
       },
     });
 
     if (!existingPost) {
-      throw new UnauthorizedException();
+      throw new NotFoundException('Post not found.');
     }
 
-    const category = await this.prisma.category.findUnique({
-      where: {
-        id: updatePostInput.categoryId,
-      },
-    });
-
-    if (!category) {
-      throw new BadRequestException('The selected category does not exist.');
+    // 2. Ensure the requester is the owner
+    if (existingPost.authorId !== userId) {
+      throw new ForbiddenException('You are not allowed to update this post.');
     }
 
-    /**
-     * Recalculate reading metadata every time
-     * the content is updated.
-     */
-    const { wordCount, readingTimeMinutes } = calculateArticleStats(
-      updatePostInput.content!,
-    );
+    // 3. Verify category existence if categoryId is being updated
+    const categoryId = updatePostInput.categoryId ?? existingPost.categoryId;
+    if (updatePostInput.categoryId) {
+      const category = await this.prisma.category.findUnique({
+        where: { id: categoryId },
+      });
 
+      if (!category) {
+        throw new BadRequestException('The selected category does not exist.');
+      }
+    }
+
+    // 4. Safe fallback for content & stats calculation
+    const contentToAnalyze = updatePostInput.content ?? existingPost.content;
+    const { wordCount, readingTimeMinutes } =
+      calculateArticleStats(contentToAnalyze);
+
+    // 5. Handle publication status and publishedAt date transitions
     const previousStatus = existingPost.status;
-
-    const nextStatus = updatePostInput.status;
-
+    const nextStatus = updatePostInput.status ?? previousStatus;
     let publishedAt = existingPost.publishedAt;
 
-    /**
-     * DRAFT -> PUBLISHED
-     *
-     * This is the moment we establish the publication date.
-     */
     if (
       previousStatus === PostStatus.DRAFT &&
       nextStatus === PostStatus.PUBLISHED
     ) {
       publishedAt = new Date();
-    }
-
-    /**
-     * PUBLISHED -> DRAFT
-     *
-     * We remove publishedAt because the article
-     * is no longer published.
-     */
-    if (
+    } else if (
       previousStatus === PostStatus.PUBLISHED &&
       nextStatus === PostStatus.DRAFT
     ) {
       publishedAt = null;
     }
 
-    return this.prisma.post.update({
+    // 6. Safe title & slug handling
+    const title = updatePostInput.title ?? existingPost.title;
+    const slug = updatePostInput.title
+      ? slugify(updatePostInput.title)
+      : existingPost.slug;
+
+    // 7. Execute Prisma update
+    const updatedPost = await this.prisma.post.update({
       where: {
         id: updatePostInput.postId,
       },
-
       data: {
-        title: updatePostInput.title,
-
-        excerpt: updatePostInput.excerpt ?? null,
-
-        content: updatePostInput.content,
-
-        categoryId: updatePostInput.categoryId,
-
+        title,
+        slug,
+        excerpt: updatePostInput.excerpt ?? existingPost.excerpt,
+        content: contentToAnalyze,
+        categoryId,
         status: nextStatus,
-
         publishedAt,
-
         wordCount,
-
         readingTimeMinutes,
-
-        slug: slugify(updatePostInput.title!),
 
         ...(updatePostInput.thumbnail !== undefined && {
           thumbnail: updatePostInput.thumbnail,
@@ -407,25 +396,17 @@ export class PostService {
         ...(updatePostInput.tags !== undefined && {
           tags: {
             set: [],
-
             connectOrCreate: updatePostInput.tags.map((tag) => ({
-              where: {
-                name: tag,
-              },
-
-              create: {
-                name: tag,
-              },
+              where: { name: tag },
+              create: { name: tag },
             })),
           },
         }),
       },
-
       include: {
         author: true,
         category: true,
         tags: true,
-
         _count: {
           select: {
             likes: true,
@@ -434,6 +415,16 @@ export class PostService {
         },
       },
     });
+
+    // 8. Correct dynamic success message
+    const message =
+      previousStatus === PostStatus.DRAFT && nextStatus === PostStatus.PUBLISHED
+        ? 'Post published successfully!'
+        : 'Post updated successfully!';
+
+    return {
+      message,
+    };
   }
 
   async delete({ postId, userId }: { postId: number; userId: number }) {

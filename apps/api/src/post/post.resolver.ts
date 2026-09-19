@@ -13,6 +13,7 @@ import { PostFiltersInput } from './dto/post-filters.input';
 import { PostsResponse } from './dto/post-response.dto';
 import { PostStatus } from 'src/generated/prisma/enums';
 import { UserPostsResponse } from './dto/user-posts-response.dto';
+import { MessageResponse } from 'src/common/dto/message-response.dto';
 
 @Resolver(() => Post)
 export class PostResolver {
@@ -83,7 +84,7 @@ export class PostResolver {
     return this.postService.userPostCount(userId);
   }
 
-  @Mutation(() => Post)
+  @Mutation(() => MessageResponse)
   createPost(
     @CurrentUser('sub')
     authorId: number,
@@ -97,7 +98,7 @@ export class PostResolver {
     });
   }
 
-  @Mutation(() => Post)
+  @Mutation(() => MessageResponse)
   updatePost(
     @CurrentUser('sub')
     userId: number,

@@ -1,45 +1,34 @@
-"use client";
-
 import { getPostComments } from "@/lib/actions/commentActions";
 import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
-import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
-import { useState } from "react";
-
 import { SessionUser } from "@/lib/session";
-import Pagination from "@/components/pagination";
+import Link from "next/link";
 
+import Pagination from "@/components/pagination";
 import CommentCard from "./commentCard";
-import CommentCardSkeleton from "./commentCardSkeleton";
 import AddComment from "./addComment";
 import { Button } from "@repo/ui/components/ui/button";
 
 type Props = {
   postId: number;
+  slug: string;
   user?: SessionUser;
+  page?: number;
 };
 
-const Comments = ({ postId, user }: Props) => {
-  const [page, setPage] = useState(1);
-
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: ["GET_POST_COMMENTS", postId, page],
-    queryFn: () =>
-      getPostComments({
-        postId,
-        skip: (page - 1) * DEFAULT_PAGE_SIZE,
-        take: DEFAULT_PAGE_SIZE,
-      }),
+const Comments = async ({ postId, slug, user, page = 1 }: Props) => {
+  const data = await getPostComments({
+    postId,
+    skip: (page - 1) * DEFAULT_PAGE_SIZE,
+    take: DEFAULT_PAGE_SIZE,
   });
 
-  const totalPages = Math.ceil((data?.count ?? 0) / DEFAULT_PAGE_SIZE);
+  const totalPages = Math.ceil(data.count / DEFAULT_PAGE_SIZE);
 
   return (
     <div>
-      {/* Composer */}
       {user ? (
         <div className="border-b border-border pb-8">
-          <AddComment user={user} postId={postId} refetch={refetch} />
+          <AddComment slug={slug} user={user} postId={postId} />
         </div>
       ) : (
         <div className="border-b border-border pb-8">
@@ -68,13 +57,8 @@ const Comments = ({ postId, user }: Props) => {
         </div>
       )}
 
-      {/* Comments */}
       <div>
-        {isLoading ? (
-          Array.from({ length: 5 }).map((_, index) => (
-            <CommentCardSkeleton key={index} />
-          ))
-        ) : data?.comments?.length ? (
+        {data.comments.length ? (
           data.comments.map((comment) => (
             <CommentCard key={comment.id} comment={comment} />
           ))
@@ -93,12 +77,7 @@ const Comments = ({ postId, user }: Props) => {
 
       {totalPages > 1 && (
         <div className="border-t border-border pt-6">
-          <Pagination
-            currentPage={page}
-            totalPages={totalPages}
-            onPageChange={setPage}
-            className="p-0"
-          />
+          <Pagination currentPage={page} totalPages={totalPages} />
         </div>
       )}
     </div>

@@ -7,6 +7,7 @@ import "highlight.js/styles/github-dark.css";
 import Providers from "@/components/providers";
 import NavbarContainer from "@/components/navbar-container";
 import { Toaster } from "@repo/ui/components/ui/sonner";
+import { SidebarProvider } from "@/components/navigation/sidebar-context";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -47,7 +48,9 @@ export default function RootLayout({
         className={`${inter.variable} ${newsreader.variable} ${jetBrainsMono.variable} antialiased`}
       >
         <Providers>
-          <NavbarContainer />
+          <SidebarProvider>
+            <NavbarContainer />
+          </SidebarProvider>
 
           <main className="pt-10 md:pt-18">{children}</main>
 

@@ -8,4 +8,7 @@ export class AuthResponse {
 
   @Field(() => String)
   accessToken!: string;
+
+  @Field()
+  message!: string;
 }

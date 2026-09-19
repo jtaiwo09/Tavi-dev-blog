@@ -1,10 +1,13 @@
 "use server";
+
 import { print } from "graphql";
 import { authFetchGraphQL, fetchGraphQL } from "@/lib/fetchGraphQL";
 import { CREATE_COMMENT_MUTATION, GET_POST_COMMENTS } from "@/lib/gqlQueries";
 import { CreateCommentFormState } from "@/lib/types/formState";
 import { CommentEntity } from "@/lib/types/modelTypes";
 import { CommentFormSchema } from "@/lib/zodSchemas/schema";
+import { getErrorMessage } from "../utils";
+import { revalidatePath } from "next/cache";
 
 export async function getPostComments({
   postId,
@@ -39,25 +42,36 @@ export async function saveComment(
     return {
       data: Object.fromEntries(formData.entries()),
       errors: validatedFields.error.flatten().fieldErrors,
+      success: false,
     };
 
-  const data = await authFetchGraphQL(print(CREATE_COMMENT_MUTATION), {
-    input: {
-      ...validatedFields.data,
-    },
-  });
+  const { postId, slug, ...rest } = validatedFields.data;
 
-  if (data)
+  try {
+    const data = await authFetchGraphQL(print(CREATE_COMMENT_MUTATION), {
+      input: {
+        postId,
+        ...rest,
+      },
+    });
+
+    revalidatePath(`/blog/${slug}/${postId}`);
+
+    if (data)
+      return {
+        message: data.createComment.message,
+        success: true,
+        open: false,
+      };
+  } catch (error) {
     return {
-      message: "Success! Your comment saved!",
-      ok: true,
-      open: false,
+      message: getErrorMessage(
+        error,
+        "We couldn't verify your email. Please try again.",
+      ),
+      success: false,
+      open: true,
+      data: Object.fromEntries(formData.entries()),
     };
-
-  return {
-    message: "Oops! Something went wrong!",
-    ok: false,
-    open: true,
-    data: Object.fromEntries(formData.entries()),
-  };
+  }
 }

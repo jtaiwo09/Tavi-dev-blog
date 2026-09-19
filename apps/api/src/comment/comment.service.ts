@@ -39,7 +39,7 @@ export class CommentService {
   }
 
   async create(createCommentInput: CreateCommentInput, authorId: number) {
-    return await this.prisma.comment.create({
+    await this.prisma.comment.create({
       data: {
         content: createCommentInput.content,
         post: {
@@ -54,5 +54,9 @@ export class CommentService {
         },
       },
     });
+
+    return {
+      message: 'Comment added successfully.',
+    };
   }
 }

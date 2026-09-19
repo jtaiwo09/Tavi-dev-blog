@@ -1,11 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import {
-  ArrowRightFromLine,
-  List,
-  Pencil,
-  User,
-  UserCircle,
-} from "lucide-react";
+import { ArrowRightFromLine, List, Pencil, User } from "lucide-react";
 
 import {
   Avatar,
@@ -22,12 +18,14 @@ import {
 } from "@repo/ui/components/ui/dropdown-menu";
 
 import type { User as UserType } from "@/lib/types/modelTypes";
+import { useSidebar } from "./navigation/sidebar-context";
 
 type Props = {
   user: UserType;
 };
 
 const Profile = ({ user }: Props) => {
+  const { toggle } = useSidebar();
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
@@ -52,7 +50,7 @@ const Profile = ({ user }: Props) => {
       <DropdownMenuContent
         align="end"
         sideOffset={8}
-        className="z-[100] w-64 rounded-xl border-border/70 bg-popover p-1.5 shadow-lg"
+        className="z-100 w-64 rounded-xl border-border/70 bg-popover p-1.5 shadow-lg"
       >
         {/* Account information */}
         <div className="mb-1 flex items-center gap-3 rounded-lg bg-muted/60 px-3 py-3">
@@ -81,7 +79,7 @@ const Profile = ({ user }: Props) => {
         <DropdownMenuSeparator />
 
         {/* Profile */}
-        <DropdownMenuItem asChild>
+        <DropdownMenuItem asChild onClick={toggle}>
           <Link href="/user/account">
             <User className="size-4 text-muted-foreground" />
             <span>My profile</span>
@@ -89,7 +87,7 @@ const Profile = ({ user }: Props) => {
         </DropdownMenuItem>
 
         {/* Create post */}
-        <DropdownMenuItem asChild>
+        <DropdownMenuItem asChild onClick={toggle}>
           <Link href="/user/create-post">
             <Pencil className="size-4 text-muted-foreground" />
             <span>Create new post</span>
@@ -97,7 +95,7 @@ const Profile = ({ user }: Props) => {
         </DropdownMenuItem>
 
         {/* My posts */}
-        <DropdownMenuItem asChild>
+        <DropdownMenuItem asChild onClick={toggle}>
           <Link href="/user/posts">
             <List className="size-4 text-muted-foreground" />
             <span>My posts</span>

@@ -1,3 +1,5 @@
+import { GraphQLError } from "../fetchGraphQL";
+
 type DateInput = Date | string | number | null | undefined;
 
 const DEFAULT_OPTIONS: Intl.DateTimeFormatOptions = {
@@ -22,4 +24,11 @@ export function formatDate(
   const mergedOptions = { ...DEFAULT_OPTIONS, ...options };
 
   return parsedDate.toLocaleDateString(locale, mergedOptions);
+}
+
+export function getErrorMessage(
+  error: unknown,
+  fallback = "Something went wrong. Please try again.",
+) {
+  return error instanceof GraphQLError ? error.message : fallback;
 }

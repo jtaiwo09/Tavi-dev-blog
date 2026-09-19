@@ -82,7 +82,7 @@ const DeletePostPage = async (props: Props) => {
 
         <CardContent className="px-6 pb-6 sm:px-7">
           {/* Post information */}
-          <div className="border-y border-border py-4">
+          <div className="border-t border-border pt-4">
             <div className="flex items-center justify-between gap-3">
               <span className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
                 <FileText className="size-3.5" />
@@ -114,19 +114,6 @@ const DeletePostPage = async (props: Props) => {
               </div>
             )}
           </div>
-
-          {/* Warning */}
-          <div className="mt-6 flex items-start gap-3">
-            <AlertTriangle
-              className="mt-0.5 size-4 shrink-0 text-destructive"
-              aria-hidden="true"
-            />
-
-            <p className="text-xs leading-5 text-muted-foreground">
-              Comments, likes, and other data associated with this post will
-              also be removed.
-            </p>
-          </div>
         </CardContent>
 
         {/* Actions */}
@@ -140,13 +127,7 @@ const DeletePostPage = async (props: Props) => {
               asChild
               className="w-full shadow-none sm:w-auto"
             >
-              <Link
-                href="/user/posts"
-                className="inline-flex items-center justify-center gap-1.5"
-              >
-                <ArrowLeft className="size-4" />
-                Cancel
-              </Link>
+              <Link href="/user/posts">Cancel</Link>
             </Button>
 
             <Button

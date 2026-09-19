@@ -18,6 +18,7 @@ import { RadioGroup, RadioGroupItem } from "@repo/ui/components/ui/radio-group";
 import { Label } from "@repo/ui/components/ui/label";
 import { POST_STATUS } from "@/lib/types/post";
 import { Switch } from "@repo/ui/components/ui/switch";
+import { useRouter } from "next/navigation";
 
 type Category = {
   id: number;
@@ -34,13 +35,19 @@ type Props = {
 
 const UpsertPostForm = ({ state, formAction, categories = [] }: Props) => {
   const [imageUrl, setImageUrl] = useState("");
+  const router = useRouter();
   const [isPublished, setIsPublished] = useState(
     state?.data?.status === POST_STATUS.PUBLISHED,
   );
 
   useEffect(() => {
-    if (state?.message) {
-      toast(state.message);
+    if (!state) return;
+
+    if (state.message) {
+      state.success ? toast.success(state.message) : toast.error(state.message);
+    }
+    if (state.success) {
+      router.push("/user/posts");
     }
   }, [state]);
 

@@ -32,8 +32,10 @@ const AccountForm = ({ user }: Props) => {
   );
 
   useEffect(() => {
-    if (state?.message) {
-      toast(state.message);
+    if (!state) return;
+
+    if (state.message) {
+      state.success ? toast.success(state.message) : toast.error(state.message);
     }
   }, [state]);
 
@@ -43,10 +45,6 @@ const AccountForm = ({ user }: Props) => {
       // encType="multipart/form-data"
       className="mx-auto w-full max-w-6xl"
     >
-      {/* =========================================================
-          Profile
-      ========================================================= */}
-
       <section className="border-y border-border">
         <div className="grid gap-10 py-10 sm:py-12 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-16 lg:py-16">
           {/* Section introduction */}
@@ -129,10 +127,6 @@ const AccountForm = ({ user }: Props) => {
           </div>
         </div>
       </section>
-
-      {/* =========================================================
-          Profile actions
-      ========================================================= */}
 
       <section className="border-b border-border">
         <div className="flex flex-col gap-6 py-8 sm:flex-row sm:items-center sm:justify-between">

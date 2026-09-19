@@ -4,6 +4,7 @@ import { cn } from "@repo/ui/lib/utils";
 import Link from "next/link";
 import { PropsWithChildren, ReactNode, useEffect, useState } from "react";
 import { X } from "lucide-react";
+import { useSidebar } from "../navigation/sidebar-context";
 
 type Props = PropsWithChildren<{
   triggerIcon: ReactNode;
@@ -11,7 +12,7 @@ type Props = PropsWithChildren<{
 }>;
 
 const SideBar = ({ children, triggerIcon, triggerClassName }: Props) => {
-  const [open, setOpen] = useState(false);
+  const { open, toggle } = useSidebar();
 
   useEffect(() => {
     if (!open) return;
@@ -25,10 +26,6 @@ const SideBar = ({ children, triggerIcon, triggerClassName }: Props) => {
     };
   }, [open]);
 
-  const close = () => {
-    setOpen(false);
-  };
-
   return (
     <>
       {/* Mobile header */}
@@ -37,13 +34,13 @@ const SideBar = ({ children, triggerIcon, triggerClassName }: Props) => {
           "fixed left-4 right-4 top-4 z-50",
           "flex h-14 items-center justify-between",
           "rounded-2xl border border-border/80",
-          "bg-background/90 px-3 shadow-sm backdrop-blur-md",
+          "bg-background px-3 shadow-sm backdrop-blur-md",
           triggerClassName,
         )}
       >
         <Link
           href="/"
-          onClick={close}
+          onClick={toggle}
           className="group flex items-center gap-3"
         >
           <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand text-xs font-bold text-brand-foreground">
@@ -60,7 +57,7 @@ const SideBar = ({ children, triggerIcon, triggerClassName }: Props) => {
           aria-label={open ? "Close navigation" : "Open navigation"}
           aria-expanded={open}
           aria-controls="mobile-navigation"
-          onClick={() => setOpen((value) => !value)}
+          onClick={toggle}
           className="
             flex size-9 items-center justify-center
             rounded-xl
@@ -81,7 +78,7 @@ const SideBar = ({ children, triggerIcon, triggerClassName }: Props) => {
       {/* Backdrop */}
       <div
         aria-hidden="true"
-        onClick={close}
+        onClick={toggle}
         className={cn(
           "fixed inset-0 z-[55] bg-black/20 backdrop-blur-[2px]",
           "transition-opacity duration-300",
@@ -107,7 +104,7 @@ const SideBar = ({ children, triggerIcon, triggerClassName }: Props) => {
         <div className="flex h-20 shrink-0 items-center justify-between border-b border-border/70 px-5">
           <Link
             href="/"
-            onClick={close}
+            onClick={toggle}
             className="group flex items-center gap-3"
           >
             <span className="flex size-8 items-center justify-center rounded-full bg-brand text-xs font-bold text-brand-foreground">
@@ -122,7 +119,7 @@ const SideBar = ({ children, triggerIcon, triggerClassName }: Props) => {
           <button
             type="button"
             aria-label="Close navigation"
-            onClick={close}
+            onClick={toggle}
             className="
               flex size-9 items-center justify-center
               rounded-xl

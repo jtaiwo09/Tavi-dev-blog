@@ -18,6 +18,7 @@ import {
 import { uploadAvatar } from "@/lib/upload";
 import { revalidatePath } from "next/cache";
 import { deleteSession } from "@/lib/session";
+import { getErrorMessage } from "../utils";
 
 export async function getCurrentUser() {
   const data = await authFetchGraphQL(print(GET_USER));
@@ -47,6 +48,7 @@ export async function updateProfile(
         avatar: "",
       },
       errors: validatedFields.error.flatten().fieldErrors,
+      success: false,
     };
   }
 
@@ -74,7 +76,7 @@ export async function updateProfile(
         bio: data.updateProfile.bio ?? "",
         avatar: data.updateProfile.avatar ?? "",
       },
-      message: "Your profile has been updated.",
+      message: data.updateProfile.message,
       success: true,
     };
   } catch (error) {
@@ -84,10 +86,11 @@ export async function updateProfile(
         bio: validatedFields.data.bio ?? "",
         avatar: "",
       },
-      message:
-        error instanceof GraphQLError
-          ? error.message
-          : "We couldn't update your profile. Please try again.",
+      success: false,
+      message: getErrorMessage(
+        error,
+        "We couldn't update your profile. Please try again.",
+      ),
     };
   }
 }

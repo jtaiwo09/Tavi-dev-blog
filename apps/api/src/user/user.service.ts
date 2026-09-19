@@ -47,7 +47,7 @@ export class UserService {
   }
 
   async updateProfile(userId: number, input: UpdateUserInput) {
-    return this.prisma.user.update({
+    await this.prisma.user.update({
       where: { id: userId },
       data: {
         ...(input.name !== undefined && { name: input.name }),
@@ -55,6 +55,9 @@ export class UserService {
         ...(input.avatar !== undefined && { avatar: input.avatar }),
       },
     });
+    return {
+      message: 'Your profile has been updated.',
+    };
   }
 
   // Soft Delete

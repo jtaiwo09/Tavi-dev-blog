@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const NoPost = () => {
   return (
-    <section className="flex min-h-[60vh] items-center justify-center">
+    <section className="flex min-h-[60dvh] items-center justify-center">
       <div className="w-full max-w-lg text-center">
         <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-brand-subtle text-brand">
           <PencilSquareIcon className="size-5" />

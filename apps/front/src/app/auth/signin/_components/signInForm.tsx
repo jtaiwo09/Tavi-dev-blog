@@ -11,12 +11,20 @@ import {
   FormPasswordInput,
 } from "@repo/ui/components/shared/form";
 import { toast } from "@repo/ui/components/ui/sonner";
+import { useRouter } from "next/navigation";
 
 const SignInForm = () => {
   const [state, action, pending] = useActionState(signIn, undefined);
+  const router = useRouter();
 
   useEffect(() => {
-    if (state?.message) {
+    if (!state?.message) return;
+
+    if (state.success) {
+      toast.success(state.message);
+      router.push("/");
+      router.refresh();
+    } else {
       toast.error(state.message);
     }
   }, [state]);

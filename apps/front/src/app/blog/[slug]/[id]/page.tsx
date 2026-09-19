@@ -15,11 +15,12 @@ import {
 type Props = {
   params: Promise<{
     id: string;
+    slug: string;
   }>;
 };
 
 const PostPage = async ({ params }: Props) => {
-  const postId = (await params).id;
+  const { id: postId, slug } = await params;
 
   let post;
   try {
@@ -132,7 +133,7 @@ const PostPage = async ({ params }: Props) => {
               </div>
             </div>
 
-            <Comments user={session?.user} postId={post.id} />
+            <Comments user={session?.user} postId={post.id} slug={slug} />
           </section>
         </div>
       </section>

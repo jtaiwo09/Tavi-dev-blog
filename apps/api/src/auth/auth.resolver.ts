@@ -4,9 +4,9 @@ import { SignInInput } from './dto/sign-in-input';
 import { AuthResponse } from './dto/auth-response.dto';
 import { Public } from 'src/common/decorators/public.decorator';
 import { SignUpInput } from './dto/sign-up-input';
-import { MessageResponse } from './dto/message-response.dto';
 import { ForgotPasswordInput } from './dto/forgot-password-input';
 import { ResetPasswordInput } from './dto/reset-password-input';
+import { MessageResponse } from 'src/common/dto/message-response.dto';
 
 @Resolver()
 @Public()

@@ -121,7 +121,7 @@ export const GET_POST_COMMENTS = gql`
 export const CREATE_COMMENT_MUTATION = gql`
   mutation createComment($input: CreateCommentInput!) {
     createComment(createCommentInput: $input) {
-      id
+      message
     }
   }
 `;
@@ -196,7 +196,7 @@ export const GET_USER_POSTS = gql`
 export const CREATE_POST_MUTATION = gql`
   mutation CreatePostMutation($input: CreatePostInput!) {
     createPost(createPostInput: $input) {
-      id
+      message
     }
   }
 `;
@@ -204,7 +204,7 @@ export const CREATE_POST_MUTATION = gql`
 export const UPDATE_POST_MUTATION = gql`
   mutation UpdatePost($input: UpdatePostInput!) {
     updatePost(updatePostInput: $input) {
-      id
+      message
     }
   }
 `;
@@ -251,12 +251,7 @@ export const VERIFY_EMAIL_MUTATION = gql`
 export const UPDATE_PROFILE_MUTATION = gql`
   mutation UpdateProfile($input: UpdateUserInput!) {
     updateProfile(input: $input) {
-      id
-      name
-      email
-      bio
-      avatar
-      status
+      message
     }
   }
 `;

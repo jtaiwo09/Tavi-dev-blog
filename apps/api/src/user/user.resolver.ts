@@ -6,7 +6,7 @@ import { Public } from 'src/common/decorators/public.decorator';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { UpdateUserInput } from './dto/update-user.input';
 import { ChangePasswordInput } from './dto/change-password.input';
-import { UserMessageResponse } from './dto/user-message-response.dto';
+import { MessageResponse } from 'src/common/dto/message-response.dto';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -28,7 +28,7 @@ export class UserResolver {
     return this.userService.findOne(id);
   }
 
-  @Mutation(() => User)
+  @Mutation(() => MessageResponse)
   updateProfile(
     @CurrentUser('sub') userId: number,
     @Args('input') input: UpdateUserInput,
@@ -41,7 +41,7 @@ export class UserResolver {
     return this.userService.deactivateAccount(userId);
   }
 
-  @Mutation(() => UserMessageResponse)
+  @Mutation(() => MessageResponse)
   changePassword(
     @CurrentUser('sub') userId: number,
     @Args('input') input: ChangePasswordInput,

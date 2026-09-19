@@ -21,10 +21,10 @@ import {
   SIGN_UP_MUTATION,
   VERIFY_EMAIL_MUTATION,
 } from "@/lib/gqlQueries";
-import { redirect } from "next/navigation";
 import { LoginFormSchema } from "@/lib/zodSchemas/schema";
 import { revalidatePath } from "next/cache";
 import { createSession } from "@/lib/session";
+import { getErrorMessage } from "../utils";
 
 export async function signUp(
   state: AuthFormState,
@@ -41,6 +41,7 @@ export async function signUp(
         email: String(rawData.email ?? ""),
       },
       errors: validatedFields.error.flatten().fieldErrors,
+      success: false,
     };
   }
 
@@ -65,10 +66,11 @@ export async function signUp(
         name: String(rawData.name ?? ""),
         email: String(rawData.email ?? ""),
       },
-      message:
-        error instanceof GraphQLError
-          ? error.message
-          : "We couldn't create your account. Please try again.",
+      message: getErrorMessage(
+        error,
+        "We couldn't create your account. Please try again.",
+      ),
+      success: false,
     };
   }
 }
@@ -87,6 +89,7 @@ export async function signIn(
         email: String(rawData.email ?? ""),
       },
       errors: validatedFields.error.flatten().fieldErrors,
+      success: false,
     };
   }
 
@@ -95,9 +98,15 @@ export async function signIn(
       input: validatedFields.data,
     });
 
-    await createSession(data.signIn);
+    const { user, accessToken, message } = data.signIn;
+
+    await createSession({ user, accessToken });
 
     revalidatePath("/");
+    return {
+      success: true,
+      message: message ?? "Signed in successfully!",
+    };
   } catch (error) {
     console.error("Sign in failed:", error);
 
@@ -105,14 +114,10 @@ export async function signIn(
       data: {
         email: String(rawData.email ?? ""),
       },
-      message:
-        error instanceof GraphQLError
-          ? error.message
-          : "Something went wrong. Please try again.",
+      message: getErrorMessage(error),
+      success: false,
     };
   }
-
-  redirect("/");
 }
 
 export async function forgotPassword(
@@ -153,10 +158,10 @@ export async function forgotPassword(
       data: {
         email: validatedFields.data.email,
       },
-      message:
-        error instanceof GraphQLError
-          ? error.message
-          : "We couldn't process your request. Please try again.",
+      message: getErrorMessage(
+        error,
+        "We couldn't process your request. Please try again.",
+      ),
     };
   }
 }
@@ -200,10 +205,10 @@ export async function resetPassword(
       data: {
         token: validatedFields.data.token,
       },
-      message:
-        error instanceof GraphQLError
-          ? error.message
-          : "We couldn't reset your password. Please try again.",
+      message: getErrorMessage(
+        error,
+        "We couldn't reset your password. Please try again.",
+      ),
     };
   }
 }
@@ -230,10 +235,10 @@ export async function verifyEmail(token: string) {
 
     return {
       success: false,
-      message:
-        error instanceof GraphQLError
-          ? error.message
-          : "We couldn't verify your email. Please try again.",
+      message: getErrorMessage(
+        error,
+        "We couldn't verify your email. Please try again.",
+      ),
     };
   }
 }
@@ -276,10 +281,10 @@ export async function resendVerificationEmail(
       data: {
         email,
       },
-      message:
-        error instanceof GraphQLError
-          ? error.message
-          : "We couldn't send the verification email. Please try again.",
+      message: getErrorMessage(
+        error,
+        "We couldn't send the verification email. Please try again.",
+      ),
     };
   }
 }

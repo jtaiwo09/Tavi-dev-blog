@@ -22,12 +22,12 @@ export class PrismaService
     // Create a pg Pool configured for Supabase Transaction Pooler (Port 6543)
     const pool = new Pool({
       connectionString,
-      ssl: process.env.SUPABASE_CA_CERT
-        ? { ca: process.env.SUPABASE_CA_CERT, rejectUnauthorized: true }
-        : { rejectUnauthorized: false },
-      max: 10,
-      idleTimeoutMillis: 30_000,
-      connectionTimeoutMillis: 10_000,
+      // ssl: process.env.SUPABASE_CA_CERT
+      //   ? { ca: process.env.SUPABASE_CA_CERT, rejectUnauthorized: true }
+      //   : { rejectUnauthorized: false },
+      // max: 10,
+      // idleTimeoutMillis: 30_000,
+      // connectionTimeoutMillis: 10_000,
     });
 
     const adapter = new PrismaPg(pool);
