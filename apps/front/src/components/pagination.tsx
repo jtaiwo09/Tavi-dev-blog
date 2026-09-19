@@ -78,31 +78,29 @@ const Pagination = ({
             );
           }
 
+          const pageNumber = Number(page);
+
           return (
             <PaginationItem key={page}>
               {onPageChange ? (
                 <PaginationLink
                   href="#"
-                  isActive={currentPage === page}
+                  isActive={currentPage === pageNumber}
                   onClick={(event) => {
                     event.preventDefault();
-                    handlePageChange(page);
+                    handlePageChange(pageNumber);
                   }}
-                  aria-current={
-                    currentPage === page ? "page" : undefined
-                  }
+                  aria-current={currentPage === pageNumber ? "page" : undefined}
                 >
-                  {page}
+                  {pageNumber}
                 </PaginationLink>
               ) : (
                 <PaginationLink
-                  href={`?page=${page}`}
-                  isActive={currentPage === page}
-                  aria-current={
-                    currentPage === page ? "page" : undefined
-                  }
+                  href={`?page=${pageNumber}`}
+                  isActive={currentPage === pageNumber}
+                  aria-current={currentPage === pageNumber ? "page" : undefined}
                 >
-                  {page}
+                  {pageNumber}
                 </PaginationLink>
               )}
             </PaginationItem>
