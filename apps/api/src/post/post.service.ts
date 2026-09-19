@@ -9,7 +9,7 @@ import { UpdatePostInput } from './dto/update-post.input';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { PostFiltersInput } from './dto/post-filters.input';
 import { calculateArticleStats } from './utils/article-stats';
-import { PostStatus } from 'generated/prisma/enums';
+import { PostStatus } from 'src/generated/prisma/enums';
 
 export function slugify(text: string): string {
   return text

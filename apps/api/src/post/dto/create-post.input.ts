@@ -8,7 +8,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { PostStatus } from 'generated/prisma/enums';
+import { PostStatus } from 'src/generated/prisma/enums';
 
 @InputType()
 export class CreatePostInput {

@@ -1,5 +1,5 @@
 import { registerEnumType } from '@nestjs/graphql';
-import { PostStatus } from 'generated/prisma/enums';
+import { PostStatus } from 'src/generated/prisma/enums';
 
 registerEnumType(PostStatus, {
   name: 'PostStatus',

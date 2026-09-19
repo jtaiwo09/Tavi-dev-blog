@@ -9,7 +9,7 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { hash, verify } from 'argon2';
 import { sanitizeUser } from 'src/utils';
-import { UserStatus } from 'generated/prisma/enums';
+import { UserStatus } from 'src/generated/prisma/enums';
 
 @Injectable()
 export class UserService {

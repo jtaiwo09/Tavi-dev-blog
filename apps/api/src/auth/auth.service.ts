@@ -16,7 +16,7 @@ import { CreateUserInput } from 'src/user/dto/create-user.input';
 
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
-import { User, UserStatus } from 'generated/prisma/client';
+import { User, UserStatus } from 'src/generated/prisma/client';
 import { sanitizeUser } from 'src/utils';
 import { MailService } from 'src/mail/mail.service';
 import { ResetPasswordInput } from './dto/reset-password-input';

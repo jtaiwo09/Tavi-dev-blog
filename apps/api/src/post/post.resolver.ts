@@ -11,7 +11,7 @@ import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 import { PostFiltersInput } from './dto/post-filters.input';
 import { PostsResponse } from './dto/post-response.dto';
-import { PostStatus } from 'generated/prisma/enums';
+import { PostStatus } from 'src/generated/prisma/enums';
 import { UserPostsResponse } from './dto/user-posts-response.dto';
 
 @Resolver(() => Post)

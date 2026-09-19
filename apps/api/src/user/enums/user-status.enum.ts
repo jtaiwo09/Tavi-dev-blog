@@ -1,5 +1,5 @@
 import { registerEnumType } from '@nestjs/graphql';
-import { UserStatus } from 'generated/prisma/client';
+import { UserStatus } from 'src/generated/prisma/client';
 
 registerEnumType(UserStatus, {
   name: 'UserStatus',

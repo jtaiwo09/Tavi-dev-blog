@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int, GraphQLISODateTime } from '@nestjs/graphql';
-import { UserStatus } from 'generated/prisma/enums';
+import { UserStatus } from 'src/generated/prisma/enums';
 import { CommentEntity } from 'src/comment/entities/comment.entity';
 import { Like } from 'src/like/entities/like.entity';
 import { Post } from 'src/post/entities/post.entity';
