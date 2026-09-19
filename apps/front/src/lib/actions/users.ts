@@ -1,24 +1,23 @@
 "use server";
 import { print } from "graphql";
-import { authFetchGraphQL, GraphQLError } from "../fetchGraphQL";
+import { authFetchGraphQL, GraphQLError } from "@/lib/fetchGraphQL";
 import {
   CHANGE_PASSWORD_MUTATION,
   DEACTIVATE_ACCOUNT_MUTATION,
   GET_USER,
   UPDATE_PROFILE_MUTATION,
-} from "../gqlQueries";
+} from "@/lib/gqlQueries";
 import type {
   ChangePasswordFormState,
   UserFormState,
-} from "../types/formState";
+} from "@/lib/types/formState";
 import {
   ChangePasswordFormSchema,
   UpdateProfileSchema,
-} from "../zodSchemas/schema";
-import { uploadAvatar } from "../upload";
+} from "@/lib/zodSchemas/schema";
+import { uploadAvatar } from "@/lib/upload";
 import { revalidatePath } from "next/cache";
-import { deleteSession } from "../session";
-import { redirect } from "next/navigation";
+import { deleteSession } from "@/lib/session";
 
 export async function getCurrentUser() {
   const data = await authFetchGraphQL(print(GET_USER));

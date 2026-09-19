@@ -1,7 +1,7 @@
 "use server";
 
 import { print } from "graphql";
-import { authFetchGraphQL, fetchGraphQL } from "../fetchGraphQL";
+import { authFetchGraphQL, fetchGraphQL } from "@/lib/fetchGraphQL";
 import {
   CREATE_POST_MUTATION,
   DELETE_POST_MUTATION,
@@ -9,15 +9,15 @@ import {
   GET_POSTS,
   GET_USER_POSTS,
   UPDATE_POST_MUTATION,
-} from "../gqlQueries";
-import { transformTakeSkip } from "../helpers";
-import { Post } from "../types/modelTypes";
-import { PostFormState } from "../types/formState";
-import { PostFormSchema } from "../zodSchemas/schema";
-import { uploadThumbnail } from "../upload";
+} from "@/lib/gqlQueries";
+import { transformTakeSkip } from "@/lib/helpers";
+import { Post } from "@/lib/types/modelTypes";
+import { PostFormState } from "@/lib/types/formState";
+import { PostFormSchema } from "@/lib/zodSchemas/schema";
+import { uploadThumbnail } from "@/lib/upload";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import type { PostFilters } from "../types/post";
+import type { PostFilters } from "@/lib/types/post";
 
 export const fetchPosts = async ({
   page,

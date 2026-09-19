@@ -1,12 +1,12 @@
 "use server";
 
-import { authFetchGraphQL } from "../fetchGraphQL";
+import { authFetchGraphQL } from "@/lib/fetchGraphQL";
 import { print } from "graphql";
 import {
   LIKE_POST_MUTATION,
   POST_LIKES,
   UNLIKE_POST_MUTATION,
-} from "../gqlQueries";
+} from "@/lib/gqlQueries";
 
 export async function getPostLikeData(postId: number) {
   const data = await authFetchGraphQL(print(POST_LIKES), {

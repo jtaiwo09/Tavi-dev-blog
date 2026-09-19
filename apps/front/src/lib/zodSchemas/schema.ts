@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { POST_STATUS } from "../types/post";
-import { ALLOWED_IMAGE_TYPES, MAX_THUMBNAIL_SIZE } from "../constants";
+import { POST_STATUS } from "@/lib/types/post";
+import { ALLOWED_IMAGE_TYPES, MAX_THUMBNAIL_SIZE } from "@/lib/constants";
 
 export const PostFormSchema = z.object({
   postId: z

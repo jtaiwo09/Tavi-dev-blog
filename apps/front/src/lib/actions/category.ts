@@ -1,6 +1,8 @@
+"use server";
+
 import { print } from "graphql";
-import { authFetchGraphQL } from "../fetchGraphQL";
-import { GET_CATEGORIES } from "../gqlQueries";
+import { authFetchGraphQL } from "@/lib/fetchGraphQL";
+import { GET_CATEGORIES } from "@/lib/gqlQueries";
 
 export async function getCategories() {
   const data = await authFetchGraphQL(print(GET_CATEGORIES));

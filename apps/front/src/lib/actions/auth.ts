@@ -4,14 +4,14 @@ import {
   type AuthFormState,
   type ForgotPasswordFormState,
   type ResetPasswordFormState,
-} from "../types/formState";
+} from "@/lib/types/formState";
 import {
   ForgotPasswordFormSchema,
   ResendVerificationEmailSchema,
   ResetPasswordFormSchema,
   SignUpFormSchema,
-} from "../zodSchemas/schema";
-import { fetchGraphQL, GraphQLError } from "../fetchGraphQL";
+} from "@/lib/zodSchemas/schema";
+import { fetchGraphQL, GraphQLError } from "@/lib/fetchGraphQL";
 import { print } from "graphql";
 import {
   FORGOT_PASSWORD_MUTATION,
@@ -20,11 +20,11 @@ import {
   SIGN_IN_MUTATION,
   SIGN_UP_MUTATION,
   VERIFY_EMAIL_MUTATION,
-} from "../gqlQueries";
+} from "@/lib/gqlQueries";
 import { redirect } from "next/navigation";
-import { LoginFormSchema } from "../zodSchemas/schema";
+import { LoginFormSchema } from "@/lib/zodSchemas/schema";
 import { revalidatePath } from "next/cache";
-import { createSession } from "../session";
+import { createSession } from "@/lib/session";
 
 export async function signUp(
   state: AuthFormState,

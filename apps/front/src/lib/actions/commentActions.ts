@@ -1,10 +1,10 @@
 "use server";
 import { print } from "graphql";
-import { authFetchGraphQL, fetchGraphQL } from "../fetchGraphQL";
-import { CREATE_COMMENT_MUTATION, GET_POST_COMMENTS } from "../gqlQueries";
-import { CreateCommentFormState } from "../types/formState";
-import { CommentEntity } from "../types/modelTypes";
-import { CommentFormSchema } from "../zodSchemas/schema";
+import { authFetchGraphQL, fetchGraphQL } from "@/lib/fetchGraphQL";
+import { CREATE_COMMENT_MUTATION, GET_POST_COMMENTS } from "@/lib/gqlQueries";
+import { CreateCommentFormState } from "@/lib/types/formState";
+import { CommentEntity } from "@/lib/types/modelTypes";
+import { CommentFormSchema } from "@/lib/zodSchemas/schema";
 
 export async function getPostComments({
   postId,
@@ -29,10 +29,10 @@ export async function getPostComments({
 
 export async function saveComment(
   state: CreateCommentFormState,
-  formData: FormData
+  formData: FormData,
 ): Promise<CreateCommentFormState> {
   const validatedFields = CommentFormSchema.safeParse(
-    Object.fromEntries(formData.entries())
+    Object.fromEntries(formData.entries()),
   );
 
   if (!validatedFields.success)
