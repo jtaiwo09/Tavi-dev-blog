@@ -17,7 +17,7 @@ const SignUpForm = () => {
 
   useEffect(() => {
     if (state?.message) {
-      toast.error(state.message);
+      toast(state.message);
     }
   }, [state]);
 

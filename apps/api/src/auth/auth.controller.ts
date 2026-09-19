@@ -3,10 +3,14 @@ import { AuthService } from './auth.service';
 import { GoogleAuthGuard } from './guards/google-auth.guard';
 import type { Response } from 'express';
 import { Public } from 'src/common/decorators/public.decorator';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly config: ConfigService,
+  ) {}
 
   @Public()
   @UseGuards(GoogleAuthGuard)
@@ -18,9 +22,10 @@ export class AuthController {
   @Get('google/callback')
   async googleCallback(@Request() req, @Res() res: Response) {
     const userData = await this.authService.login(req.user);
+    const baseUrl = this.config.get<string>('app.baseUrl');
 
     res.redirect(
-      `http://localhost:3000/api/auth/google/callback?userId=${userData.user.id}&name=${userData.user.name}&avatar=${userData.user.avatar}&accessToken=${userData.accessToken}`,
+      `${baseUrl}/api/auth/google/callback?userId=${userData.user.id}&name=${userData.user.name}&avatar=${userData.user.avatar}&accessToken=${userData.accessToken}`,
     );
   }
 

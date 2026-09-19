@@ -31,7 +31,7 @@ const Navbar = async () => {
           href="/"
           className="
             group flex min-h-11 items-center gap-3
-            rounded-xl px-3
+            rounded-xs px-3
             text-sm font-medium
             text-nav-foreground
             transition-colors
@@ -57,7 +57,7 @@ const Navbar = async () => {
           href="#contact"
           className="
             group flex min-h-11 items-center gap-3
-            rounded-xl px-3
+            rounded-xs px-3
             text-sm font-medium
             text-nav-foreground
             transition-colors

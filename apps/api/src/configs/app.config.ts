@@ -16,7 +16,7 @@ export default () => {
       apiKey: process.env.RESEND_API_KEY,
     },
     app: {
-      baseUrl: process.env.APP_BASE_URL,
+      baseUrl: process.env.APP_BASE_URL ?? 'http://localhost:3000',
       mailDriver: process.env.MAIL_DRIVER,
       env: process.env.APP_ENV,
     },
