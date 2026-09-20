@@ -1,27 +1,25 @@
 "use client";
 
 import { useActionState } from "react";
-
 import { saveNewPost } from "@/lib/actions/postActions";
-
 import UpsertPostForm from "./upsertPostForm";
-
-type Category = {
-  id: number;
-  name: string;
-  slug: string;
-  description?: string;
-};
+import type { Category, Tag } from "@/lib/types/modelTypes";
 
 type Props = {
   categories: Category[];
+  tags: Tag[];
 };
 
-const CreatePostContainer = ({ categories }: Props) => {
+const CreatePostContainer = ({ categories, tags }: Props) => {
   const [state, action] = useActionState(saveNewPost, undefined);
 
   return (
-    <UpsertPostForm state={state} formAction={action} categories={categories} />
+    <UpsertPostForm
+      state={state}
+      formAction={action}
+      categories={categories}
+      tags={tags}
+    />
   );
 };
 

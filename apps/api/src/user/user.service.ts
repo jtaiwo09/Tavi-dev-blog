@@ -69,8 +69,6 @@ export class UserService {
       },
     });
 
-    console.log(899, d);
-
     return true;
   }
 

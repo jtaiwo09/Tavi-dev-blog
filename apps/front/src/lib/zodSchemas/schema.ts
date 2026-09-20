@@ -40,16 +40,22 @@ export const PostFormSchema = z.object({
 
   tags: z
     .string()
-    .trim()
     .optional()
     .transform((value) => {
-      if (!value) return [];
+      if (!value?.trim()) {
+        return [];
+      }
 
       return value
         .split(",")
-        .map((tag) => tag.trim())
-        .filter(Boolean);
-    }),
+        .map((tag) => Number(tag))
+        .filter((tag) => Number.isInteger(tag) && tag > 0);
+    })
+    .refine((tags) => tags.length <= 3, "You can select a maximum of 3 tags")
+    .refine(
+      (tags) => new Set(tags).size === tags.length,
+      "A tag cannot be selected more than once",
+    ),
 
   thumbnail: z
     .instanceof(File)

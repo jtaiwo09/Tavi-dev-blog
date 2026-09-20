@@ -13,27 +13,26 @@ import { toast } from "@repo/ui/components/ui/sonner";
 import { Button } from "@repo/ui/components/ui/button";
 
 import { PostFormState } from "@/lib/types/formState";
-import PostEditor from "@/components/post-editor";
-import { RadioGroup, RadioGroupItem } from "@repo/ui/components/ui/radio-group";
+import PostEditor from "@/components/editor/post-editor";
 import { Label } from "@repo/ui/components/ui/label";
 import { POST_STATUS } from "@/lib/types/post";
 import { Switch } from "@repo/ui/components/ui/switch";
 import { useRouter } from "next/navigation";
-
-type Category = {
-  id: number;
-  name: string;
-  slug: string;
-  description?: string;
-};
+import type { Category, Tag } from "@/lib/types/modelTypes";
 
 type Props = {
   state: PostFormState;
   formAction: (payload: FormData) => void;
   categories: Category[];
+  tags: Tag[];
 };
 
-const UpsertPostForm = ({ state, formAction, categories = [] }: Props) => {
+const UpsertPostForm = ({
+  state,
+  formAction,
+  categories = [],
+  tags = [],
+}: Props) => {
   const [imageUrl, setImageUrl] = useState("");
   const router = useRouter();
   const [isPublished, setIsPublished] = useState(
@@ -53,18 +52,19 @@ const UpsertPostForm = ({ state, formAction, categories = [] }: Props) => {
 
   const previewUrl = imageUrl || state?.data?.previousThumbnailUrl;
 
-  const formattedCategories = categories.map((category) => ({
+  const categoryOptions = categories.map((category) => ({
     value: category.id.toString(),
     label: category.name,
+  }));
+
+  const tagOptions = tags.map((tags) => ({
+    value: tags.id.toString(),
+    label: tags.name,
   }));
 
   return (
     <form action={formAction} className="mx-auto w-full max-w-6xl">
       <input type="hidden" name="postId" defaultValue={state?.data?.postId} />
-
-      {/* =========================================================
-          Main writing area
-      ========================================================= */}
 
       <section className="border-y border-border">
         <div className="px-1 py-10 sm:py-12 lg:py-16">
@@ -143,23 +143,29 @@ const UpsertPostForm = ({ state, formAction, categories = [] }: Props) => {
 
           <div className="space-y-8">
             {/* Tags */}
-
             <FormField
               id="tags"
               label="Tags"
               error={state?.errors?.tags}
-              description="Use commas to separate topics."
+              description="Select up to 3 tags that describe this article."
             >
-              <FormInput
+              <FormSelect
                 id="tags"
                 name="tags"
-                placeholder="react, typescript, nextjs"
-                defaultValue={state?.data?.tags}
+                multiple
+                maxSelections={3}
+                defaultValue={
+                  state?.data?.tags?.map((tagId) => tagId.toString()) ?? []
+                }
+                options={tagOptions}
+                placeholder="Select tags"
+                onMaxReached={(max) =>
+                  toast.info(`You can select up to ${max} tags`)
+                }
               />
             </FormField>
 
             {/* Category */}
-
             <FormField
               id="categoryId"
               label="Category"
@@ -171,7 +177,7 @@ const UpsertPostForm = ({ state, formAction, categories = [] }: Props) => {
                 name="categoryId"
                 placeholder="Select a category"
                 defaultValue={state?.data?.categoryId?.toString()}
-                options={formattedCategories}
+                options={categoryOptions}
                 required
               />
             </FormField>

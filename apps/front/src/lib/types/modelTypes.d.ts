@@ -55,6 +55,7 @@ export type User = {
 export type Tag = {
   id: number;
   name: string;
+  slug: string;
 };
 
 export type CommentEntity = {

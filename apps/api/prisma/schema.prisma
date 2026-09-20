@@ -70,7 +70,7 @@ model Post {
 
   comments Comment[]
   likes    Like[]
-  tags     Tag[]     @relation("PostTags")
+  tags     PostTag[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -103,11 +103,26 @@ model Comment {
 }
 
 model Tag {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  posts     Post[]   @relation("PostTags")
+  id    Int       @id @default(autoincrement())
+  name  String    @unique
+  slug  String    @unique
+  posts PostTag[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model PostTag {
+  postId Int
+  tagId  Int
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@id([postId, tagId])
+  @@index([tagId])
 }
 
 model Like {

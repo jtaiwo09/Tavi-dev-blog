@@ -1,3 +1,4 @@
+import type { Tag } from "./modelTypes";
 import type { PostStatus } from "./post";
 
 export type AuthFormState =
@@ -57,7 +58,7 @@ export type PostFormState =
         content?: string;
         categoryId?: string;
         thumbnail?: File | null;
-        tags?: string;
+        tags?: number[];
         status?: PostStatus;
         previousThumbnailUrl?: string;
       };

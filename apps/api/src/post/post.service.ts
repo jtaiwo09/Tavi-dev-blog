@@ -11,17 +11,18 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { PostFiltersInput } from './dto/post-filters.input';
 import { calculateArticleStats } from './utils/article-stats';
 import { PostStatus } from 'src/generated/prisma/enums';
+import { Prisma } from 'src/generated/prisma/client';
 
 export function slugify(text: string): string {
   return text
     .toString()
-    .normalize('NFKD') // Split accented characters into base letters and diacritical marks
-    .replace(/[\u0300-\u036f]/g, '') // Remove diacritical marks (accents)
-    .toLowerCase() // Convert to lowercase
-    .trim() // Trim leading and trailing whitespace
-    .replace(/[^a-z0-9 -]/g, '') // Remove special characters (keep alphanumerics, spaces, and hyphens)
-    .replace(/\s+/g, '-') // Replace spaces (and multiple spaces) with a single hyphen
-    .replace(/-+/g, '-'); // Collapse consecutive hyphens into a single hyphen
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9 -]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
 }
 
 @Injectable()
@@ -37,7 +38,7 @@ export class PostService {
     take?: number;
     filters?: PostFiltersInput;
   }) {
-    const where = {
+    const where: Prisma.PostWhereInput = {
       status: PostStatus.PUBLISHED,
 
       ...(filters?.categoryId !== undefined && {
@@ -47,7 +48,9 @@ export class PostService {
       ...(filters?.tag?.trim() && {
         tags: {
           some: {
-            name: filters.tag.trim(),
+            tag: {
+              slug: filters.tag.trim(),
+            },
           },
         },
       }),
@@ -57,11 +60,13 @@ export class PostService {
           {
             title: {
               contains: filters.search.trim(),
+              mode: 'insensitive',
             },
           },
           {
             excerpt: {
               contains: filters.search.trim(),
+              mode: 'insensitive',
             },
           },
         ],
@@ -76,11 +81,15 @@ export class PostService {
         orderBy: {
           publishedAt: 'desc',
         },
-
         include: {
           author: true,
           category: true,
-          tags: true,
+
+          tags: {
+            include: {
+              tag: true,
+            },
+          },
 
           _count: {
             select: {
@@ -91,11 +100,16 @@ export class PostService {
         },
       }),
 
-      this.prisma.post.count({ where }),
+      this.prisma.post.count({
+        where,
+      }),
     ]);
 
     return {
-      posts,
+      posts: posts.map((post) => ({
+        ...post,
+        tags: post.tags.map((postTag) => postTag.tag),
+      })),
       total,
     };
   }
@@ -107,7 +121,9 @@ export class PostService {
       },
       include: {
         author: true,
-        tags: true,
+        tags: {
+          include: { tag: true },
+        },
         category: true,
 
         _count: {
@@ -122,7 +138,10 @@ export class PostService {
     if (!post) {
       throw new NotFoundException('Post not found.');
     }
-    return post;
+    return {
+      ...post,
+      tags: post.tags.map((postTag) => postTag.tag),
+    };
   }
 
   async findByUser({
@@ -166,7 +185,7 @@ export class PostService {
           thumbnail: true,
 
           category: true,
-          tags: true,
+          tags: { include: { tag: true } },
           author: true,
 
           _count: {
@@ -202,7 +221,10 @@ export class PostService {
     ]);
 
     return {
-      posts,
+      posts: posts.map((post) => ({
+        ...post,
+        tags: post.tags.map((postTag) => postTag.tag),
+      })),
       total,
       stats: {
         total,
@@ -227,10 +249,17 @@ export class PostService {
     createPostInput: CreatePostInput;
     authorId: number;
   }) {
-    // 1. Validate Category Existence
+    const { categoryId, tags = [], ...postData } = createPostInput;
+
+    // 1. Enforce maximum of 3 tags
+    if (tags.length > 3) {
+      throw new BadRequestException('A post can have a maximum of 3 tags.');
+    }
+
+    // 2. Validate category
     const category = await this.prisma.category.findUnique({
       where: {
-        id: createPostInput.categoryId,
+        id: categoryId,
       },
     });
 
@@ -238,36 +267,64 @@ export class PostService {
       throw new BadRequestException('The selected category does not exist.');
     }
 
-    // 2. Calculate Reading Metadata
+    // 3. Validate tags
+    const uniqueTagIds = [...new Set(tags)];
+
+    if (uniqueTagIds.length !== tags.length) {
+      throw new BadRequestException('A tag cannot be selected more than once.');
+    }
+
+    if (uniqueTagIds.length > 0) {
+      const existingTags = await this.prisma.tag.findMany({
+        where: {
+          id: {
+            in: uniqueTagIds,
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      if (existingTags.length !== uniqueTagIds.length) {
+        throw new BadRequestException(
+          'One or more selected tags do not exist.',
+        );
+      }
+    }
+
+    // 4. Calculate article metadata
     const { wordCount, readingTimeMinutes } = calculateArticleStats(
-      createPostInput.content,
+      postData.content,
     );
 
-    // 3. Determine Publication Status and Date
-    const status = createPostInput.status ?? PostStatus.DRAFT;
+    // 5. Publication state
+    const status = postData.status ?? PostStatus.DRAFT;
+
     const publishedAt = status === PostStatus.PUBLISHED ? new Date() : null;
 
-    // 4. Generate Unique Slug (Prevents P2002 Unique Constraint Failures)
-    const baseSlug = slugify(createPostInput.title);
+    // 6. Generate slug
+    const baseSlug = slugify(postData.title);
     const uniqueSuffix = Math.random().toString(36).substring(2, 7);
+
     const slug = `${baseSlug}-${uniqueSuffix}`;
 
-    // 5. Create Post Record in Database
+    // 7. Create post
     const post = await this.prisma.post.create({
       data: {
-        title: createPostInput.title,
-        excerpt: createPostInput.excerpt ?? null,
-        content: createPostInput.content,
+        title: postData.title,
+        excerpt: postData.excerpt ?? null,
+        content: postData.content,
         status,
         publishedAt,
         wordCount,
         readingTimeMinutes,
-        thumbnail: createPostInput.thumbnail ?? null,
+        thumbnail: postData.thumbnail ?? null,
         slug,
 
         category: {
           connect: {
-            id: createPostInput.categoryId,
+            id: categoryId,
           },
         },
 
@@ -277,20 +334,25 @@ export class PostService {
           },
         },
 
-        tags: createPostInput.tags?.length
-          ? {
-              connectOrCreate: createPostInput.tags.map((name) => ({
-                where: { name },
-                create: { name },
-              })),
-            }
-          : undefined,
+        tags: {
+          create: uniqueTagIds.map((tagId) => ({
+            tag: {
+              connect: {
+                id: tagId,
+              },
+            },
+          })),
+        },
       },
 
       include: {
         author: true,
         category: true,
-        tags: true,
+        tags: {
+          include: {
+            tag: true,
+          },
+        },
         _count: {
           select: {
             likes: true,
@@ -335,9 +397,12 @@ export class PostService {
 
     // 3. Verify category existence if categoryId is being updated
     const categoryId = updatePostInput.categoryId ?? existingPost.categoryId;
-    if (updatePostInput.categoryId) {
+
+    if (updatePostInput.categoryId !== undefined) {
       const category = await this.prisma.category.findUnique({
-        where: { id: categoryId },
+        where: {
+          id: categoryId,
+        },
       });
 
       if (!category) {
@@ -345,14 +410,16 @@ export class PostService {
       }
     }
 
-    // 4. Safe fallback for content & stats calculation
+    // 4. Calculate content statistics
     const contentToAnalyze = updatePostInput.content ?? existingPost.content;
+
     const { wordCount, readingTimeMinutes } =
       calculateArticleStats(contentToAnalyze);
 
-    // 5. Handle publication status and publishedAt date transitions
+    // 5. Handle publication status and publishedAt
     const previousStatus = existingPost.status;
     const nextStatus = updatePostInput.status ?? previousStatus;
+
     let publishedAt = existingPost.publishedAt;
 
     if (
@@ -367,46 +434,97 @@ export class PostService {
       publishedAt = null;
     }
 
-    // 6. Safe title & slug handling
+    // 6. Handle title and slug
     const title = updatePostInput.title ?? existingPost.title;
+
     const slug = updatePostInput.title
       ? slugify(updatePostInput.title)
       : existingPost.slug;
 
-    // 7. Execute Prisma update
+    // 7. Validate tags if they were provided
+    let tagIds: number[] | undefined;
+
+    if (updatePostInput.tags !== undefined) {
+      // Remove duplicate tag IDs
+      tagIds = [...new Set(updatePostInput.tags)];
+
+      // Maximum of 3 tags per post
+      if (tagIds.length > 3) {
+        throw new BadRequestException('A post can have a maximum of 3 tags.');
+      }
+
+      // Verify that every selected tag exists
+      if (tagIds.length > 0) {
+        const existingTags = await this.prisma.tag.findMany({
+          where: {
+            id: {
+              in: tagIds,
+            },
+          },
+          select: {
+            id: true,
+          },
+        });
+
+        if (existingTags.length !== tagIds.length) {
+          throw new BadRequestException(
+            'One or more selected tags do not exist.',
+          );
+        }
+      }
+    }
+
+    // 8. Build update data
+    const data: any = {
+      title,
+      slug,
+      excerpt: updatePostInput.excerpt ?? existingPost.excerpt,
+      content: contentToAnalyze,
+      categoryId,
+      status: nextStatus,
+      publishedAt,
+      wordCount,
+      readingTimeMinutes,
+
+      ...(updatePostInput.thumbnail !== undefined && {
+        thumbnail: updatePostInput.thumbnail,
+      }),
+    };
+
+    // 9. Update tags only when tags were provided
+    //
+    // An empty array means:
+    // "Remove all tags from this post."
+    //
+    // An undefined value means:
+    // "Don't change the existing tags."
+    if (tagIds !== undefined) {
+      data.tags = {
+        deleteMany: {},
+        create: tagIds.map((tagId) => ({
+          tag: {
+            connect: {
+              id: tagId,
+            },
+          },
+        })),
+      };
+    }
+
+    // 10. Update the post
     const updatedPost = await this.prisma.post.update({
       where: {
         id: updatePostInput.postId,
       },
-      data: {
-        title,
-        slug,
-        excerpt: updatePostInput.excerpt ?? existingPost.excerpt,
-        content: contentToAnalyze,
-        categoryId,
-        status: nextStatus,
-        publishedAt,
-        wordCount,
-        readingTimeMinutes,
-
-        ...(updatePostInput.thumbnail !== undefined && {
-          thumbnail: updatePostInput.thumbnail,
-        }),
-
-        ...(updatePostInput.tags !== undefined && {
-          tags: {
-            set: [],
-            connectOrCreate: updatePostInput.tags.map((tag) => ({
-              where: { name: tag },
-              create: { name: tag },
-            })),
-          },
-        }),
-      },
+      data,
       include: {
         author: true,
         category: true,
-        tags: true,
+        tags: {
+          include: {
+            tag: true,
+          },
+        },
         _count: {
           select: {
             likes: true,
@@ -416,7 +534,7 @@ export class PostService {
       },
     });
 
-    // 8. Correct dynamic success message
+    // 11. Success message
     const message =
       previousStatus === PostStatus.DRAFT && nextStatus === PostStatus.PUBLISHED
         ? 'Post published successfully!'

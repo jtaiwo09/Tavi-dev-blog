@@ -9,7 +9,6 @@ import { join } from 'path';
 import { PostModule } from './post/post.module';
 import { UserModule } from './user/user.module';
 import { CommentModule } from './comment/comment.module';
-import { TagModule } from './tag/tag.module';
 import { LikeModule } from './like/like.module';
 import { AuthModule } from './auth/auth.module';
 import appConfig from './configs/app.config';
@@ -18,6 +17,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { CategoryModule } from './category/category.module';
 import { MailModule } from './mail/mail.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { TagModule } from './tag/tag.module';
 
 @Module({
   imports: [

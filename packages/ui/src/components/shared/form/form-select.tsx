@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Check } from "lucide-react";
 
 import {
   Select,
@@ -24,9 +25,14 @@ type FormSelectProps = {
   required?: boolean;
   disabled?: boolean;
   placeholder?: string;
-  value?: string;
-  defaultValue?: string;
-  onValueChange?: (value: string) => void;
+  value?: string | string[];
+  defaultValue?: string | string[];
+  multiple?: boolean;
+  /** Max number of options that can be selected (multiple mode only). */
+  maxSelections?: number;
+  /** Called when the user tries to select more than `maxSelections`. */
+  onMaxReached?: (max: number) => void;
+  onValueChange?: (value: string | string[]) => void;
   options: FormSelectOption[];
 };
 
@@ -40,11 +46,19 @@ const FormSelect = ({
   options,
   value,
   defaultValue,
+  multiple = false,
+  maxSelections,
+  onMaxReached,
   onValueChange,
 }: FormSelectProps) => {
-  const [selectedValue, setSelectedValue] = React.useState(
-    value ?? defaultValue ?? "",
+  const [selectedValue, setSelectedValue] = React.useState<string | string[]>(
+    value ?? defaultValue ?? (multiple ? [] : ""),
   );
+  const [open, setOpen] = React.useState(false);
+
+  // Set right before Radix closes the menu after an item pick, so we can
+  // keep the menu open in multiple mode.
+  const keepOpenRef = React.useRef(false);
 
   React.useEffect(() => {
     if (value !== undefined) {
@@ -52,15 +66,65 @@ const FormSelect = ({
     }
   }, [value]);
 
+  const selectedValues = React.useMemo(
+    () =>
+      Array.isArray(selectedValue)
+        ? selectedValue
+        : selectedValue
+          ? [selectedValue]
+          : [],
+    [selectedValue],
+  );
+
+  const max =
+    multiple && maxSelections && maxSelections > 0 ? maxSelections : undefined;
+  const limitReached = max !== undefined && selectedValues.length >= max;
+
   const handleValueChange = (nextValue: string) => {
-    setSelectedValue(nextValue);
-    onValueChange?.(nextValue);
+    if (!multiple) {
+      setSelectedValue(nextValue);
+      onValueChange?.(nextValue);
+      return;
+    }
+
+    keepOpenRef.current = true;
+
+    const exists = selectedValues.includes(nextValue);
+
+    // Block adding beyond the limit (removing is always allowed)
+    if (!exists && max !== undefined && selectedValues.length >= max) {
+      onMaxReached?.(max);
+      return;
+    }
+
+    const nextValues = exists
+      ? selectedValues.filter((item) => item !== nextValue)
+      : [...selectedValues, nextValue];
+
+    setSelectedValue(nextValues);
+    onValueChange?.(nextValues);
   };
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    // Radix closes the menu after every item pick; ignore that in multiple mode
+    if (multiple && !nextOpen && keepOpenRef.current) {
+      keepOpenRef.current = false;
+      return;
+    }
+    keepOpenRef.current = false;
+    setOpen(nextOpen);
+  };
+
+  const selectedLabels = options
+    .filter((option) => selectedValues.includes(option.value))
+    .map((option) => option.label);
 
   return (
     <>
       <Select
-        value={value !== undefined ? value : selectedValue}
+        open={open}
+        onOpenChange={handleOpenChange}
+        value={multiple ? "" : (selectedValue as string)}
         onValueChange={handleValueChange}
         disabled={disabled}
       >
@@ -87,7 +151,7 @@ const FormSelect = ({
             "focus-visible:ring-offset-0",
             "focus-visible:outline-none",
 
-            "data-[placeholder]:text-field-placeholder",
+            "data-placeholder:text-field-placeholder",
 
             "disabled:cursor-not-allowed disabled:opacity-60",
 
@@ -99,28 +163,82 @@ const FormSelect = ({
             ],
           )}
         >
-          <SelectValue placeholder={placeholder} />
+          {multiple ? (
+            <span
+              className={cn(
+                "truncate text-foreground",
+                selectedLabels.length === 0 && "text-field-placeholder",
+              )}
+            >
+              {selectedLabels.length > 0
+                ? selectedLabels.join(", ")
+                : placeholder}
+            </span>
+          ) : (
+            <SelectValue placeholder={placeholder} />
+          )}
         </SelectTrigger>
 
         <SelectContent>
-          {options.map((option) => (
-            <SelectItem
-              key={option.value}
-              value={option.value}
-              disabled={option.disabled}
+          {max !== undefined && (
+            <div
+              className={cn(
+                "pointer-events-none px-2 pb-1 pt-1.5 text-xs",
+                limitReached ? "text-brand" : "text-muted-foreground",
+              )}
             >
-              {option.label}
-            </SelectItem>
-          ))}
+              {selectedValues.length} of {max} selected
+              {limitReached && " (limit reached)"}
+            </div>
+          )}
+
+          {options.map((option) => {
+            const isSelected = selectedValues.includes(option.value);
+            const isLimitBlocked = multiple && limitReached && !isSelected;
+
+            return (
+              <SelectItem
+                key={option.value}
+                value={option.value}
+                disabled={option.disabled || isLimitBlocked}
+                className={cn(
+                  // Hide Radix's built-in check indicator in multiple mode
+                  // and remove the left padding it reserved.
+                  multiple && "pl-2 [&>span:first-child]:hidden",
+                  multiple && isSelected && "bg-brand/10",
+                )}
+              >
+                <div className="flex w-full items-center gap-2">
+                  {multiple && (
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        "flex size-4 shrink-0 items-center justify-center",
+                        "rounded-[4px] border transition-colors",
+                        isSelected
+                          ? "border-brand bg-brand text-white"
+                          : "border-input bg-background",
+                      )}
+                    >
+                      {isSelected && (
+                        <Check className="size-3" strokeWidth={3} />
+                      )}
+                    </span>
+                  )}
+
+                  <span>{option.label}</span>
+                </div>
+              </SelectItem>
+            );
+          })}
         </SelectContent>
       </Select>
 
       <input
         type="hidden"
         name={name ?? id}
-        value={selectedValue}
+        value={selectedValues.join(",")}
         disabled={disabled}
-        required={required}
         readOnly
       />
     </>

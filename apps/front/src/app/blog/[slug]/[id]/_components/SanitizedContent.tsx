@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { common, createLowlight } from "lowlight";
 import { toHtml } from "hast-util-to-html";
+import { useCodeCopyButtons } from "@/hooks/use-code-copy-buttons";
 
 const lowlight = createLowlight(common);
 
@@ -12,6 +13,8 @@ type Props = {
 
 const SanitizedContent = ({ content }: Props) => {
   const [highlightedContent, setHighlightedContent] = useState(content);
+  const ref = useRef<HTMLDivElement>(null);
+  useCodeCopyButtons(ref, highlightedContent);
 
   useEffect(() => {
     const container = document.createElement("div");
@@ -44,9 +47,6 @@ const SanitizedContent = ({ content }: Props) => {
 
       try {
         const result = lowlight.highlight(language, source);
-
-        // Lowlight returns a HAST tree.
-        // Convert it into HTML before inserting it.
         code.innerHTML = toHtml(result);
 
         code.classList.add("hljs");
@@ -60,6 +60,7 @@ const SanitizedContent = ({ content }: Props) => {
 
   return (
     <div
+      ref={ref}
       className="article-content"
       dangerouslySetInnerHTML={{
         __html: highlightedContent,

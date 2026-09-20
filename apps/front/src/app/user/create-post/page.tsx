@@ -1,8 +1,11 @@
 import { getCategories } from "@/lib/actions/category";
 import CreatePostContainer from "./_components/CreatePostContainer";
+import { getTags } from "@/lib/actions/tags";
+import type { Category, Tag } from "@/lib/types/modelTypes";
 
 const CreatePostPage = async () => {
-  const categories = await getCategories();
+  const categories: Category[] = await getCategories();
+  const tags: Tag[] = await getTags();
 
   return (
     <main className="min-h-screen w-full bg-background">
@@ -32,7 +35,7 @@ const CreatePostPage = async () => {
           </div>
         </header>
 
-        <CreatePostContainer categories={categories} />
+        <CreatePostContainer categories={categories} tags={tags} />
       </div>
     </main>
   );

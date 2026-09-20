@@ -16,7 +16,8 @@ import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { common, createLowlight } from "lowlight";
 
 import { cn } from "@repo/ui/lib/utils";
-import PostEditorToolbar from "@/components/post-editor-toolbar";
+import PostEditorToolbar from "@/components/editor/post-editor-toolbar";
+import { CodeBlockWithCopy } from "./code-block-with-copy";
 
 const lowlight = createLowlight(common);
 
@@ -34,6 +35,7 @@ const PostEditor = ({ name, defaultValue = "", error }: Props) => {
       StarterKit.configure({
         codeBlock: false,
       }),
+      CodeBlockWithCopy,
 
       Placeholder.configure({
         placeholder: "Start writing your article...",

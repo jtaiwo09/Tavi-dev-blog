@@ -2,6 +2,7 @@ import { getCategories } from "@/lib/actions/category";
 import { fetchPostById } from "@/lib/actions/postActions";
 
 import UpdatePostContainer from "./_components/UpdatePostContainer";
+import { getTags } from "@/lib/actions/tags";
 
 type Props = {
   params: Promise<{
@@ -14,6 +15,7 @@ const UpdatePostPage = async ({ params }: Props) => {
 
   const post = await fetchPostById(Number(id));
   const categories = await getCategories();
+  const tags = await getTags();
 
   return (
     <main className="min-h-screen w-full bg-background">
@@ -50,7 +52,7 @@ const UpdatePostPage = async ({ params }: Props) => {
           </div>
         </header>
 
-        <UpdatePostContainer post={post} categories={categories} />
+        <UpdatePostContainer post={post} categories={categories} tags={tags} />
       </div>
     </main>
   );

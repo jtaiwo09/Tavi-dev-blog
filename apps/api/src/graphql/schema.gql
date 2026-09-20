@@ -59,9 +59,7 @@ type CommentEntity {
 type Tag {
   id: Int!
   name: String!
-  posts: [Post!]!
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  slug: String!
 }
 
 type Count {
@@ -130,6 +128,7 @@ type Query {
   user: User!
   getPostComments(postId: Int!, take: Int = 12, skip: Int = 0): [CommentEntity!]!
   postCommentCount(postId: Int!): Int!
+  tags: [Tag!]!
   tag(id: Int!): Tag!
   postLikesCount(postId: Int!): Int!
   userLikedPost(postId: Int!): Boolean!
@@ -174,7 +173,7 @@ input CreatePostInput {
   content: String!
   categoryId: Int!
   status: PostStatus! = DRAFT
-  tags: [String!]
+  tags: [Int!]
   thumbnail: String
 }
 
@@ -184,7 +183,7 @@ input UpdatePostInput {
   content: String
   categoryId: Int
   status: PostStatus = DRAFT
-  tags: [String!]
+  tags: [Int!]
   thumbnail: String
   postId: Int!
 }

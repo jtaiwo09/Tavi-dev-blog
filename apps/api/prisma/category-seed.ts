@@ -1,7 +1,7 @@
 import { PrismaPg } from '@prisma/adapter-pg';
 import 'dotenv/config';
 import { PrismaClient } from '../src/generated/prisma/client';
-import { DEFAULT_CATEGORIES } from 'src/constants';
+import { DEFAULT_CATEGORIES, DEFAULT_TAGS } from 'src/constants';
 
 const adapter = new PrismaPg({
   connectionString: process.env.DIRECT_URL,
@@ -20,6 +20,18 @@ async function main() {
         description: category.description,
       },
       create: category,
+    });
+  }
+
+  for (const tag of DEFAULT_TAGS) {
+    await prisma.tag.upsert({
+      where: {
+        slug: tag.slug,
+      },
+      update: {
+        name: tag.name,
+      },
+      create: tag,
     });
   }
 }

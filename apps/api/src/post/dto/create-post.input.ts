@@ -1,5 +1,6 @@
 import { Field, Int, InputType } from '@nestjs/graphql';
 import {
+  ArrayMaxSize,
   IsArray,
   IsEnum,
   IsInt,
@@ -39,11 +40,12 @@ export class CreatePostInput {
   @IsEnum(PostStatus)
   status!: PostStatus;
 
-  @Field(() => [String], { nullable: true })
+  @Field(() => [Int], { nullable: true })
   @IsOptional()
   @IsArray()
-  @IsString({ each: true })
-  tags?: string[];
+  @ArrayMaxSize(3)
+  @IsInt({ each: true })
+  tags?: number[];
 
   @Field({ nullable: true })
   @IsOptional()

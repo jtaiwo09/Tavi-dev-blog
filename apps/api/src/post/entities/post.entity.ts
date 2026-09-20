@@ -2,8 +2,8 @@ import { ObjectType, Field, Int, GraphQLISODateTime } from '@nestjs/graphql';
 import { PostStatus } from 'src/generated/prisma/enums';
 import { Category } from 'src/category/entities/category.entity';
 import { CommentEntity } from 'src/comment/entities/comment.entity';
-import { Tag } from 'src/tag/entities/tag.entity';
 import { User } from 'src/user/entities/user.entity';
+import { Tag } from 'src/tag/entities/tag.entity';
 
 @ObjectType()
 export class Count {

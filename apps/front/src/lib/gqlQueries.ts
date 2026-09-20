@@ -226,6 +226,16 @@ export const GET_CATEGORIES = gql`
   }
 `;
 
+export const GET_TAGS = gql`
+  query tags {
+    tags {
+      id
+      name
+      slug
+    }
+  }
+`;
+
 export const GET_USER = gql`
   query user {
     user {

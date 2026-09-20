@@ -53,7 +53,7 @@ const PostPage = async ({ params }: Props) => {
             </div>
 
             {/* Title */}
-            <h1 className="text-balance max-w-5xl font-serif text-5xl font-medium leading-[0.98] tracking-[-0.045em] text-foreground sm:text-6xl lg:text-[5.5rem]">
+            <h1 className="text-balance max-w-6xl font-serif text-4xl font-medium md:leading-[0.98] md:tracking-[-0.02em] text-foreground sm:text-6xl lg:text-[5rem]">
               {post.title}
             </h1>
 
@@ -88,7 +88,7 @@ const PostPage = async ({ params }: Props) => {
       {/* Hero image */}
       <section className="content-container py-8 sm:py-10 lg:py-12">
         <div className="mx-auto max-w-6xl">
-          <div className="relative aspect-[16/8] overflow-hidden bg-surface-subtle">
+          <div className="relative aspect-16/8 overflow-hidden bg-surface-subtle">
             <Image
               src={post.thumbnail || "/no-image.png"}
               alt={post.title}
@@ -105,7 +105,7 @@ const PostPage = async ({ params }: Props) => {
 
       {/* Article */}
       <section className="content-container pb-20 sm:pb-24 lg:pb-32">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-5xl">
           <article className="reading-container">
             <SanitizedContent content={post.content} />
           </article>

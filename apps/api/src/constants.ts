@@ -140,3 +140,66 @@ export const DEFAULT_CATEGORIES = [
       'Step-by-step tutorials, practical guides, and hands-on technical walkthroughs.',
   },
 ];
+
+export const DEFAULT_TAGS = [
+  {
+    name: 'JavaScript',
+    slug: 'javascript',
+  },
+  {
+    name: 'TypeScript',
+    slug: 'typescript',
+  },
+  {
+    name: 'React',
+    slug: 'react',
+  },
+  {
+    name: 'Next.js',
+    slug: 'next-js',
+  },
+  {
+    name: 'Node.js',
+    slug: 'node-js',
+  },
+  {
+    name: 'NestJS',
+    slug: 'nestjs',
+  },
+  {
+    name: 'GraphQL',
+    slug: 'graphql',
+  },
+  {
+    name: 'PostgreSQL',
+    slug: 'postgresql',
+  },
+  {
+    name: 'Prisma',
+    slug: 'prisma',
+  },
+  {
+    name: 'Authentication',
+    slug: 'authentication',
+  },
+  {
+    name: 'Web Security',
+    slug: 'web-security',
+  },
+  {
+    name: 'Performance',
+    slug: 'performance',
+  },
+  {
+    name: 'Testing',
+    slug: 'testing',
+  },
+  {
+    name: 'DevOps',
+    slug: 'devops',
+  },
+  {
+    name: 'Docker',
+    slug: 'docker',
+  },
+];

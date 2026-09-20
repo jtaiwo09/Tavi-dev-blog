@@ -1,15 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTagInput } from './dto/create-tag.input';
 import { UpdateTagInput } from './dto/update-tag.input';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class TagService {
+  constructor(private readonly prisma: PrismaService) {}
   create(createTagInput: CreateTagInput) {
     return 'This action adds a new tag';
   }
 
   findAll() {
-    return `This action returns all tag`;
+    return this.prisma.tag.findMany({
+      orderBy: {
+        name: 'asc',
+      },
+    });
   }
 
   findOne(id: number) {

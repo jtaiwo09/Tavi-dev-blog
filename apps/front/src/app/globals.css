@@ -2,6 +2,7 @@
 
 @import "tailwindcss";
 @import "@repo/ui/globals.css";
+@import "highlight.js/styles/github-dark.css";
 
 /* ═══════════════════════════════════════════════════════════════════════════
    ARTICLE / EDITORIAL CONTENT
@@ -212,6 +213,12 @@
     font-size: 0.84rem;
     line-height: 1.75;
     tab-size: 2;
+
+    .article-content pre ::selection,
+    .post-editor-content .ProseMirror pre ::selection {
+      background-color: #264f78 !important; /* GitHub dark selection blue */
+      color: #ffffff !important;
+    }
   }
 
   /* ─────────────────────────────────────────────────────────────────────────
@@ -306,9 +313,14 @@
 
   .article-content pre,
   .post-editor-content .ProseMirror pre {
+    margin-block: 2rem;
+    overflow-x: auto;
+    padding: 1.25rem 3rem 1.25rem 1.5rem; /* right room for copy button */
+    border: 1px solid #30363d;
+    border-radius: 0.875rem;
     background: #0d1117;
-    border-color: #30363d;
     color: #e6edf3;
+    -webkit-overflow-scrolling: touch;
   }
 
   .article-content pre code,
@@ -320,6 +332,78 @@
     font-size: 0.875rem;
     line-height: 1.75;
     tab-size: 2;
+  }
+
+  /* Visible selection on the dark surface (beats the editor-wide rule) */
+  .article-content pre::selection,
+  .article-content pre ::selection,
+  .post-editor-content .ProseMirror pre::selection,
+  .post-editor-content .ProseMirror pre ::selection {
+    background: #264f78;
+    color: #fff;
+  }
+
+  /* ── Copy button ──────────────────────────────────────────────────── */
+
+  .code-block {
+    position: relative;
+    margin-block: 2rem;
+  }
+
+  .code-block pre {
+    margin: 0; /* spacing lives on the wrapper */
+  }
+
+  .code-copy-btn {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid #30363d;
+    border-radius: 0.5rem;
+    background: #161b22;
+    color: #8b949e;
+    cursor: pointer;
+    opacity: 0;
+    transition:
+      opacity 150ms ease,
+      color 150ms ease,
+      background-color 150ms ease;
+  }
+
+  .code-block:hover .code-copy-btn,
+  .code-copy-btn:focus-visible,
+  .code-copy-btn[data-copied] {
+    opacity: 1;
+  }
+
+  .code-copy-btn:hover {
+    background: #21262d;
+    color: #e6edf3;
+  }
+
+  .code-copy-btn[data-copied] {
+    color: #7ee787;
+  }
+
+  /* No hover on touch devices, so always show it */
+  @media (hover: none) {
+    .code-copy-btn {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .article-content pre,
+    .post-editor-content .ProseMirror pre {
+      padding: 1rem 2.75rem 1rem 1rem;
+      border-radius: 0.75rem;
+    }
   }
 
   /* ─────────────────────────────────────────────────────────────────────────
