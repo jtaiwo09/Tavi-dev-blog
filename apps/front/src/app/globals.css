@@ -2,21 +2,11 @@
 
 @import "tailwindcss";
 @import "@repo/ui/globals.css";
-/* @import "highlight.js/styles/github-dark.css"; */
+@import "highlight.js/styles/github-dark.css";
 
 /* ═══════════════════════════════════════════════════════════════════════════
    ARTICLE / EDITORIAL CONTENT
    ═══════════════════════════════════════════════════════════════════════════ */
-
-/*
-   * Shared typography for:
-   * - Published articles
-   * - Article previews
-   * - Tiptap editor
-   *
-   * The public article uses .article-content.
-   * The editor uses .post-editor-content .ProseMirror.
-   */
 
 .article-content {
   color: hsl(var(--prose));
@@ -299,14 +289,6 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    CODE SYNTAX
    ═══════════════════════════════════════════════════════════════════════════ */
-
-/*
-   * Code blocks intentionally use a dark code surface in both themes.
-   *
-   * This creates a stable developer-focused reading experience and prevents
-   * syntax highlighting from becoming unreadable when the application theme
-   * changes.
-   */
 
 .article-content pre,
 .post-editor-content .ProseMirror pre {
