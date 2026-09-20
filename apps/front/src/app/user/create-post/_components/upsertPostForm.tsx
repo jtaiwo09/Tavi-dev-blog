@@ -19,10 +19,12 @@ import { POST_STATUS } from "@/lib/types/post";
 import { Switch } from "@repo/ui/components/ui/switch";
 import { useRouter } from "next/navigation";
 import type { Category, Tag } from "@/lib/types/modelTypes";
+import { Loader2 } from "lucide-react";
 
 type Props = {
   state: PostFormState;
   formAction: (payload: FormData) => void;
+  isPending?: boolean;
   categories: Category[];
   tags: Tag[];
 };
@@ -30,6 +32,7 @@ type Props = {
 const UpsertPostForm = ({
   state,
   formAction,
+  isPending = false,
   categories = [],
   tags = [],
 }: Props) => {
@@ -61,6 +64,8 @@ const UpsertPostForm = ({
     value: tags.id.toString(),
     label: tags.name,
   }));
+
+  const isEditing = Boolean(state?.data?.postId);
 
   return (
     <form action={formAction} className="mx-auto w-full max-w-6xl">
@@ -152,16 +157,8 @@ const UpsertPostForm = ({
               <FormSelect
                 id="tags"
                 name="tags"
-                multiple
-                maxSelections={3}
-                defaultValue={
-                  state?.data?.tags?.map((tagId) => tagId.toString()) ?? []
-                }
                 options={tagOptions}
                 placeholder="Select tags"
-                onMaxReached={(max) =>
-                  toast.info(`You can select up to ${max} tags`)
-                }
               />
             </FormField>
 
@@ -334,8 +331,21 @@ const UpsertPostForm = ({
           </FormField>
 
           <div className="flex flex-col-reverse gap-3 sm:flex-row">
-            <Button type="submit" className="h-11 px-7">
-              Save post
+            <Button
+              type="submit"
+              disabled={isPending}
+              className="h-11 px-7 min-w-35"
+            >
+              {isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  {isEditing ? "Updating..." : "Saving..."}
+                </>
+              ) : isEditing ? (
+                "Update post"
+              ) : (
+                "Save post"
+              )}
             </Button>
           </div>
         </div>

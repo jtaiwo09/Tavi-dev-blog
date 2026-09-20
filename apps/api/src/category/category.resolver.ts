@@ -22,6 +22,7 @@ export class CategoryResolver {
     return this.categoryService.findAll();
   }
 
+  @Public()
   @Query(() => Category, { name: 'category' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.categoryService.findOne(id);

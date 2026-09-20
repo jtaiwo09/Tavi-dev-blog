@@ -41,7 +41,7 @@ const PostList = ({ posts, currentPage, totalPages, stats }: Props) => {
             </p>
           </div>
 
-          <Button asChild className="h-10 w-fit rounded-lg px-4 shadow-none">
+          <Button asChild className="h-10 w-fit px-4 shadow-none">
             <Link href="/user/create-post">
               <Plus className="size-4" />
               New post

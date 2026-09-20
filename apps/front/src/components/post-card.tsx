@@ -12,9 +12,10 @@ const PostCard = ({
   slug,
   thumbnail,
   content,
+  excerpt: postExcerpt,
   publishedAt,
   author,
-  tags,
+  category,
   readingTimeMinutes,
 }: Props) => {
   const href = `/blog/${slug}/${id}`;
@@ -35,10 +36,12 @@ const PostCard = ({
       .replace(/\s+/g, " ")
       .trim() ?? "";
 
-  const excerpt =
+  const generatedExcerpt =
     plainTextContent.length > 150
       ? `${plainTextContent.slice(0, 150).trim()}…`
       : plainTextContent;
+
+  const excerpt = postExcerpt?.trim() || generatedExcerpt;
 
   return (
     <article className="group border-t border-border">
@@ -46,13 +49,12 @@ const PostCard = ({
         href={href}
         className="grid gap-6 py-8 sm:gap-8 md:grid-cols-[minmax(0,1fr)_15rem] md:items-center lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-12 lg:py-10"
       >
-        {/* Content */}
         <div className="min-w-0">
-          {/* Metadata */}
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
-            {tags?.[0]?.name && (
+            {category?.name && (
               <>
-                <span className="text-brand">{tags[0].name}</span>
+                <span className="text-brand">{category?.name}</span>
+
                 <span aria-hidden="true" className="text-border">
                   /
                 </span>
@@ -62,19 +64,16 @@ const PostCard = ({
             {formattedDate && <span>{formattedDate}</span>}
           </div>
 
-          {/* Title */}
-          <h3 className="mt-3 max-w-3xl text-balance font-serif text-2xl font-medium leading-[1.08] tracking-[-0.025em] text-foreground transition-colors duration-200 group-hover:text-brand sm:text-3xl lg:text-[2.15rem]">
+          <h3 className="mt-3 max-w-3xl text-balance font-serif text-xl font-medium sm:leading-[1.08] md:tracking-[-0.02em] text-foreground transition-colors duration-200 group-hover:text-brand sm:text-3xl lg:text-[2.15rem]">
             {title}
           </h3>
 
-          {/* Excerpt */}
           {excerpt && (
             <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base sm:leading-7">
               {excerpt}
             </p>
           )}
 
-          {/* Footer */}
           <div className="mt-5 flex items-center gap-4">
             <div className="flex min-w-0 items-center gap-2.5">
               {author?.avatar ? (
@@ -115,7 +114,6 @@ const PostCard = ({
           </div>
         </div>
 
-        {/* Image */}
         <div className="relative order-first aspect-video overflow-hidden bg-surface-subtle md:order-last md:aspect-[4/3]">
           <Image
             src={thumbnail || "/no-image.png"}

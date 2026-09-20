@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Newsreader } from "next/font/google";
-import "highlight.js/styles/github-dark.css";
 import "./globals.css";
 
 import Providers from "@/components/providers";
 import NavbarContainer from "@/components/navbar-container";
 import { Toaster } from "@repo/ui/components/ui/sonner";
 import { SidebarProvider } from "@/components/navigation/sidebar-context";
+import Footer from "@/components/footer";
+import { siteConfig } from "@/lib/site";
+import { OrganizationSchema } from "@/components/seo/organization-schema";
+import { WebsiteSchema } from "@/components/seo/website-schema";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -28,12 +31,58 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
+
   title: {
-    default: "Tavi",
-    template: "%s | Tavi",
+    default: siteConfig.title,
+    template: `%s | ${siteConfig.name}`,
   },
-  description:
-    "Insights, tutorials, and stories for developers and curious minds.",
+
+  description: siteConfig.description,
+
+  applicationName: siteConfig.name,
+
+  authors: [
+    {
+      name: siteConfig.author.name,
+      url: siteConfig.author.url,
+    },
+  ],
+
+  creator: siteConfig.author.name,
+
+  keywords: siteConfig.keywords,
+
+  alternates: {
+    canonical: "/",
+  },
+
+  openGraph: {
+    type: "website",
+    locale: siteConfig.locale,
+    url: "/",
+    siteName: siteConfig.siteName,
+    title: siteConfig.title,
+    description: siteConfig.description,
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.title,
+    description: siteConfig.description,
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
 };
 
 export default function RootLayout({
@@ -44,15 +93,18 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
+        id="top"
         className={`${inter.variable} ${newsreader.variable} ${jetBrainsMono.variable} antialiased`}
       >
+        <OrganizationSchema />
+        <WebsiteSchema />
         <Providers>
           <SidebarProvider>
             <NavbarContainer />
           </SidebarProvider>
 
-          <main className="pt-10 md:pt-18">{children}</main>
-
+          <main className="pt-18">{children}</main>
+          <Footer />
           <Toaster richColors />
         </Providers>
       </body>

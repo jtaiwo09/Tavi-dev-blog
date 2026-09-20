@@ -138,6 +138,7 @@ type Query {
 
 input PostFiltersInput {
   categoryId: Int
+  categorySlug: String
   tag: String
   search: String
 }

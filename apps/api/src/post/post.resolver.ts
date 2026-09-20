@@ -44,6 +44,7 @@ export class PostResolver {
     })
     filters?: PostFiltersInput,
   ) {
+    console.log(89, filters);
     return this.postService.findAll({
       skip: skip ?? 0,
       take: take ?? DEFAULT_PAGE_SIZE,

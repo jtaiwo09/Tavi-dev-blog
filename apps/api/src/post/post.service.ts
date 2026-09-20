@@ -45,6 +45,12 @@ export class PostService {
         categoryId: filters.categoryId,
       }),
 
+      ...(filters?.categorySlug && {
+        category: {
+          slug: filters.categorySlug,
+        },
+      }),
+
       ...(filters?.tag?.trim() && {
         tags: {
           some: {
@@ -78,9 +84,14 @@ export class PostService {
         where,
         skip,
         take,
-        orderBy: {
-          publishedAt: 'desc',
-        },
+        orderBy: [
+          {
+            publishedAt: 'desc',
+          },
+          {
+            id: 'desc',
+          },
+        ],
         include: {
           author: true,
           category: true,
@@ -138,6 +149,40 @@ export class PostService {
     if (!post) {
       throw new NotFoundException('Post not found.');
     }
+    return {
+      ...post,
+      tags: post.tags.map((postTag) => postTag.tag),
+    };
+  }
+
+  async findBySlug(slug: string) {
+    const post = await this.prisma.post.findFirst({
+      where: {
+        slug,
+        status: PostStatus.PUBLISHED,
+      },
+      include: {
+        author: true,
+        tags: {
+          include: {
+            tag: true,
+          },
+        },
+        category: true,
+
+        _count: {
+          select: {
+            likes: true,
+            comments: true,
+          },
+        },
+      },
+    });
+
+    if (!post) {
+      throw new NotFoundException('Post not found.');
+    }
+
     return {
       ...post,
       tags: post.tags.map((postTag) => postTag.tag),

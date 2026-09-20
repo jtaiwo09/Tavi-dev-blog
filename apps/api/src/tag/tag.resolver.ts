@@ -3,6 +3,7 @@ import { TagService } from './tag.service';
 import { Tag } from './entities/tag.entity';
 import { CreateTagInput } from './dto/create-tag.input';
 import { UpdateTagInput } from './dto/update-tag.input';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @Resolver(() => Tag)
 export class TagResolver {
@@ -13,11 +14,13 @@ export class TagResolver {
     return this.tagService.create(createTagInput);
   }
 
+  @Public()
   @Query(() => [Tag], { name: 'tags' })
   findAll() {
     return this.tagService.findAll();
   }
 
+  @Public()
   @Query(() => Tag, { name: 'tag' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.tagService.findOne(id);

@@ -11,20 +11,66 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@repo/ui/components/ui/avatar";
+import { siteConfig } from "@/lib/site";
+import type { Metadata } from "next";
 
 type Props = {
   params: Promise<{
-    id: string;
     slug: string;
+    id: string;
   }>;
 };
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+
+  let post;
+
+  try {
+    post = await fetchPostById(+id);
+  } catch {
+    return {};
+  }
+
+  return {
+    title: post.title,
+    description: post.excerpt ?? undefined,
+
+    alternates: {
+      canonical: `${siteConfig.url}/blog/${post.slug}`,
+    },
+
+    openGraph: {
+      type: "article",
+      title: post.title,
+      description: post.excerpt ?? undefined,
+      url: `${siteConfig.url}/blog/${post.slug}/${id}`,
+      publishedTime: post.publishedAt
+        ? new Date(post.publishedAt).toISOString()
+        : undefined,
+
+      modifiedTime: post.updatedAt
+        ? new Date(post.updatedAt).toISOString()
+        : undefined,
+      authors: [post.author.name],
+      images: post.thumbnail
+        ? [
+            {
+              url: post.thumbnail,
+              alt: post.title,
+            },
+          ]
+        : undefined,
+    },
+  };
+}
+
 const PostPage = async ({ params }: Props) => {
-  const { id: postId, slug } = await params;
+  const { slug, id } = await params;
 
   let post;
   try {
-    post = await fetchPostById(+postId);
+    post = await fetchPostById(+id);
   } catch {
     notFound();
   }
@@ -104,7 +150,7 @@ const PostPage = async ({ params }: Props) => {
       </section>
 
       {/* Article */}
-      <section className="content-container pb-20 sm:pb-24 lg:pb-32">
+      <section className="content-container pb-16 sm:pb-24 lg:pb-32">
         <div className="mx-auto max-w-5xl">
           <article className="reading-container">
             <SanitizedContent content={post.content} />

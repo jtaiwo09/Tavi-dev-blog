@@ -34,7 +34,7 @@ const Hero = () => {
 
             <div className="mt-7 flex items-center gap-4">
               <Link
-                href="#latest-posts"
+                href="/blog"
                 className="group inline-flex items-center gap-2 text-sm font-semibold text-foreground"
               >
                 Start reading

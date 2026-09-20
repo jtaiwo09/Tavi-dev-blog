@@ -10,7 +10,7 @@ const CreatePostPage = async () => {
   return (
     <main className="min-h-screen w-full bg-background">
       <div className="content-container">
-        <header className="border-b border-border py-12">
+        <header className="border-b border-border py-16">
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-end lg:gap-16">
             <div>
               <div className="mb-6 flex items-center gap-3">

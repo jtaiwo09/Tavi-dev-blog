@@ -1,5 +1,3 @@
-// app/user/posts/@modal/[id]/(.)delete/page.tsx
-
 "use client";
 
 import {
@@ -14,19 +12,19 @@ import {
 } from "@repo/ui/components/ui/alert-dialog";
 import { Button } from "@repo/ui/components/ui/button";
 import { deletePost } from "@/lib/actions/postActions";
-import { AlertTriangle, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { use, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 type Props = {
   params: Promise<{
-    id: string;
+    id: number;
   }>;
 };
 
 const InterceptorDeletePostPage = (props: Props) => {
   const params = use(props.params);
-  const postId = Number(params.id);
+  const postId = +params.id;
 
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(true);

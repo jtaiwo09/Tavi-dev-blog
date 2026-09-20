@@ -1,12 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import {
-  AlertTriangle,
-  ArrowLeft,
-  Calendar,
-  FileText,
-  Trash2,
-} from "lucide-react";
+import { Calendar, FileText, Trash2 } from "lucide-react";
 
 import { Button } from "@repo/ui/components/ui/button";
 import {
@@ -21,6 +15,7 @@ import { Badge } from "@repo/ui/components/ui/badge";
 import { deletePost, fetchPostById } from "@/lib/actions/postActions";
 import { formatDate } from "@/lib/utils";
 import { POST_STATUS } from "@/lib/types/post";
+import { use } from "react";
 
 type Props = {
   params: Promise<{
@@ -29,7 +24,7 @@ type Props = {
 };
 
 const DeletePostPage = async (props: Props) => {
-  const params = await props.params;
+  const params = use(props.params);
   const post = await fetchPostById(+params.id);
 
   const formAction = async () => {

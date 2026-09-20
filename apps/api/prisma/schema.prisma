@@ -78,6 +78,8 @@ model Post {
   @@index([authorId])
   @@index([categoryId])
   @@index([createdAt])
+  @@index([status, publishedAt])
+  @@index([categoryId, publishedAt])
 }
 
 model Category {

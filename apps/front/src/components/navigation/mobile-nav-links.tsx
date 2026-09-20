@@ -20,7 +20,7 @@ const MobileNavLinks = ({ user }: IProps) => {
       {/* Blog */}
 
       <Link
-        href="/"
+        href="/blog"
         onClick={toggle}
         className="group flex min-h-11 items-center gap-3
             rounded-xs px-3
@@ -45,7 +45,7 @@ const MobileNavLinks = ({ user }: IProps) => {
 
       {/* Contact */}
       <Link
-        href="#contact"
+        href="https://ktaiwo.vercel.app/#contact"
         className="
             group flex min-h-11 items-center gap-3
             rounded-xs px-3

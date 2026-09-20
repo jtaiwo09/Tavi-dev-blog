@@ -8,281 +8,293 @@
    ARTICLE / EDITORIAL CONTENT
    ═══════════════════════════════════════════════════════════════════════════ */
 
-.article-content {
-  color: hsl(var(--prose));
-  font-family: var(--font-sans);
-  font-size: 1.0625rem;
-  line-height: 1.85;
-  text-rendering: optimizeLegibility;
-}
+@layer base {
+  /*
+   * Shared typography for:
+   * - Published articles
+   * - Article previews
+   * - Tiptap editor
+   *
+   * The public article uses .article-content.
+   * The editor uses .post-editor-content .ProseMirror.
+   */
 
-.article-content > *:first-child {
-  margin-top: 0;
-}
+  .article-content {
+    color: hsl(var(--prose));
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.85;
+    text-rendering: optimizeLegibility;
+  }
 
-.article-content > *:last-child {
-  margin-bottom: 0;
-}
+  .article-content > *:first-child {
+    margin-top: 0;
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  .article-content > *:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────────────
      Paragraphs
      ─────────────────────────────────────────────────────────────────────── */
 
-.article-content p {
-  margin-block: 1.5rem;
-}
+  .article-content p {
+    margin-block: 1.5rem;
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Headings
      ─────────────────────────────────────────────────────────────────────── */
 
-.article-content h1,
-.article-content h2,
-.article-content h3,
-.article-content h4 {
-  color: hsl(var(--prose-heading));
-  font-family: var(--font-serif);
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  text-wrap: balance;
-}
+  .article-content h1,
+  .article-content h2,
+  .article-content h3,
+  .article-content h4 {
+    color: hsl(var(--prose-heading));
+    font-family: var(--font-serif);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
 
-.article-content h1 {
-  margin-top: 3.5rem;
-  margin-bottom: 1.25rem;
-  font-size: clamp(2rem, 5vw, 3rem);
-  line-height: 1.1;
-}
+  .article-content h1 {
+    margin-top: 3.5rem;
+    margin-bottom: 1.25rem;
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.1;
+  }
 
-.article-content h2 {
-  margin-top: 3.5rem;
-  margin-bottom: 1rem;
-  font-size: clamp(1.65rem, 4vw, 2.15rem);
-  line-height: 1.2;
-}
+  .article-content h2 {
+    margin-top: 3.5rem;
+    margin-bottom: 1rem;
+    font-size: clamp(1.65rem, 4vw, 2.15rem);
+    line-height: 1.2;
+  }
 
-.article-content h3 {
-  margin-top: 2.5rem;
-  margin-bottom: 0.8rem;
-  font-size: clamp(1.35rem, 3vw, 1.65rem);
-  line-height: 1.25;
-}
+  .article-content h3 {
+    margin-top: 2.5rem;
+    margin-bottom: 0.8rem;
+    font-size: clamp(1.35rem, 3vw, 1.65rem);
+    line-height: 1.25;
+  }
 
-.article-content h4 {
-  margin-top: 2rem;
-  margin-bottom: 0.65rem;
-  font-family: var(--font-sans);
-  font-size: 1.1rem;
-  line-height: 1.35;
-}
+  .article-content h4 {
+    margin-top: 2rem;
+    margin-bottom: 0.65rem;
+    font-family: var(--font-sans);
+    font-size: 1.1rem;
+    line-height: 1.35;
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Links
      ─────────────────────────────────────────────────────────────────────── */
 
-.article-content a {
-  color: hsl(var(--prose-link));
-  text-decoration-line: underline;
-  text-decoration-color: hsl(var(--prose-link) / 0.35);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-  transition:
-    color 150ms ease,
-    text-decoration-color 150ms ease;
-}
+  .article-content a {
+    color: hsl(var(--prose-link));
+    text-decoration-line: underline;
+    text-decoration-color: hsl(var(--prose-link) / 0.35);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition:
+      color 150ms ease,
+      text-decoration-color 150ms ease;
+  }
 
-.article-content a:hover {
-  color: hsl(var(--link-hover));
-  text-decoration-color: currentColor;
-}
+  .article-content a:hover {
+    color: hsl(var(--link-hover));
+    text-decoration-color: currentColor;
+  }
 
-.article-content a:focus-visible {
-  border-radius: 0.25rem;
-  outline: 2px solid hsl(var(--ring));
-  outline-offset: 3px;
-}
+  .article-content a:focus-visible {
+    border-radius: 0.25rem;
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 3px;
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Strong / emphasis
      ─────────────────────────────────────────────────────────────────────── */
 
-.article-content strong {
-  color: hsl(var(--prose-heading));
-  font-weight: 650;
-}
+  .article-content strong {
+    color: hsl(var(--prose-heading));
+    font-weight: 650;
+  }
 
-.article-content em {
-  color: hsl(var(--prose));
-}
+  .article-content em {
+    color: hsl(var(--prose));
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Lists
      ─────────────────────────────────────────────────────────────────────── */
 
-.article-content ul,
-.article-content ol {
-  margin-block: 1.5rem;
-  padding-left: 1.5rem;
-}
+  .article-content ul,
+  .article-content ol {
+    margin-block: 1.5rem;
+    padding-left: 1.5rem;
+  }
 
-.article-content ul {
-  list-style-type: disc;
-}
+  .article-content ul {
+    list-style-type: disc;
+  }
 
-.article-content ol {
-  list-style-type: decimal;
-}
+  .article-content ol {
+    list-style-type: decimal;
+  }
 
-.article-content li {
-  margin-block: 0.55rem;
-  padding-left: 0.3rem;
-}
+  .article-content li {
+    margin-block: 0.55rem;
+    padding-left: 0.3rem;
+  }
 
-.article-content li::marker {
-  color: hsl(var(--brand));
-}
+  .article-content li::marker {
+    color: hsl(var(--brand));
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Blockquotes
      ─────────────────────────────────────────────────────────────────────── */
 
-.article-content blockquote {
-  margin-block: 2rem;
-  border-left: 3px solid hsl(var(--brand));
-  border-radius: 0 0.5rem 0.5rem 0;
-  background: hsl(var(--brand) / 0.05);
-  padding: 1rem 1.25rem;
-  color: hsl(var(--prose-quote));
-  font-size: 1.05rem;
-  font-style: italic;
-}
+  .article-content blockquote {
+    margin-block: 2rem;
+    border-left: 3px solid hsl(var(--brand));
+    border-radius: 0 0.5rem 0.5rem 0;
+    background: hsl(var(--brand) / 0.05);
+    padding: 1rem 1.25rem;
+    color: hsl(var(--prose-quote));
+    font-size: 1.05rem;
+    font-style: italic;
+  }
 
-.article-content blockquote p {
-  margin-block: 0.5rem;
-}
+  .article-content blockquote p {
+    margin-block: 0.5rem;
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Inline code
      ─────────────────────────────────────────────────────────────────────── */
 
-.article-content :not(pre) > code {
-  display: inline;
-  border: 1px solid hsl(var(--border));
-  border-radius: 0.4rem;
-  background: hsl(var(--surface-subtle));
-  padding: 0.15rem 0.4rem;
-  color: hsl(var(--prose-code));
-  font-family: var(--font-mono);
-  font-size: 0.85em;
-  font-weight: 500;
-}
+  .article-content :not(pre) > code {
+    display: inline;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.4rem;
+    background: hsl(var(--surface-subtle));
+    padding: 0.15rem 0.4rem;
+    color: hsl(var(--prose-code));
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    font-weight: 500;
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Code blocks
      ─────────────────────────────────────────────────────────────────────── */
 
-.article-content pre {
-  margin-block: 2rem;
-  overflow-x: auto;
-  border: 1px solid hsl(var(--border));
-  border-radius: 0.875rem;
-  background: hsl(var(--surface-raised));
-  padding: 1.25rem 1.5rem;
-  box-shadow: var(--shadow-sm-value);
-  -webkit-overflow-scrolling: touch;
-}
-
-.article-content pre code {
-  display: block;
-  min-width: max-content;
-  background: transparent;
-  padding: 0;
-  color: hsl(var(--prose));
-  font-family: var(--font-mono);
-  font-size: 0.84rem;
-  line-height: 1.75;
-  tab-size: 2;
-
-  .article-content pre ::selection,
-  .post-editor-content .ProseMirror pre ::selection {
-    background-color: #264f78 !important; /* GitHub dark selection blue */
-    color: #ffffff !important;
+  .article-content pre {
+    margin-block: 2rem;
+    overflow-x: auto;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.875rem;
+    background: hsl(var(--surface-raised));
+    padding: 1.25rem 1.5rem;
+    box-shadow: var(--shadow-sm-value);
+    -webkit-overflow-scrolling: touch;
   }
-}
 
-/* ─────────────────────────────────────────────────────────────────────────
+  .article-content pre code {
+    display: block;
+    min-width: max-content;
+    background: transparent;
+    padding: 0;
+    color: hsl(var(--prose));
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+    line-height: 1.75;
+    tab-size: 2;
+
+    .article-content pre ::selection,
+    .post-editor-content .ProseMirror pre ::selection {
+      background-color: #264f78 !important; /* GitHub dark selection blue */
+      color: #ffffff !important;
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────────────────
      Images
      ─────────────────────────────────────────────────────────────────────── */
 
-.article-content img {
-  display: block;
-  width: auto;
-  max-width: 100%;
-  height: auto;
-  margin-block: 2rem;
-  border: 1px solid hsl(var(--border));
-  border-radius: 0.875rem;
-}
+  .article-content img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    margin-block: 2rem;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.875rem;
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Horizontal rule
      ─────────────────────────────────────────────────────────────────────── */
 
-.article-content hr {
-  margin-block: 3rem;
-  border: 0;
-  border-top: 1px solid hsl(var(--border));
-}
+  .article-content hr {
+    margin-block: 3rem;
+    border: 0;
+    border-top: 1px solid hsl(var(--border));
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Tables
      ─────────────────────────────────────────────────────────────────────── */
 
-.article-content table {
-  display: block;
-  width: 100%;
-  margin-block: 2rem;
-  overflow-x: auto;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-}
+  .article-content table {
+    display: block;
+    width: 100%;
+    margin-block: 2rem;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
 
-.article-content th,
-.article-content td {
-  min-width: 120px;
-  border: 1px solid hsl(var(--border));
-  padding: 0.75rem 1rem;
-  text-align: left;
-}
+  .article-content th,
+  .article-content td {
+    min-width: 120px;
+    border: 1px solid hsl(var(--border));
+    padding: 0.75rem 1rem;
+    text-align: left;
+  }
 
-.article-content th {
-  background: hsl(var(--surface-subtle));
-  color: hsl(var(--prose-heading));
-  font-weight: 650;
-}
+  .article-content th {
+    background: hsl(var(--surface-subtle));
+    color: hsl(var(--prose-heading));
+    font-weight: 650;
+  }
 
-.article-content tr:nth-child(even) td {
-  background: hsl(var(--surface-subtle) / 0.35);
-}
+  .article-content tr:nth-child(even) td {
+    background: hsl(var(--surface-subtle) / 0.35);
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Mobile
      ─────────────────────────────────────────────────────────────────────── */
 
-@media (max-width: 640px) {
-  .article-content {
-    font-size: 1rem;
-    line-height: 1.8;
-  }
+  @media (max-width: 640px) {
+    .article-content {
+      font-size: 1rem;
+      line-height: 1.8;
+    }
 
-  .article-content pre {
-    margin-inline: -0.5rem;
-    border-radius: 0.75rem;
-    padding: 1rem;
-  }
+    .article-content pre {
+      margin-inline: -0.5rem;
+      border-radius: 0.75rem;
+      padding: 1rem;
+    }
 
-  .article-content blockquote {
-    padding-left: 1rem;
+    .article-content blockquote {
+      padding-left: 1rem;
+    }
   }
 }
 
@@ -290,458 +302,468 @@
    CODE SYNTAX
    ═══════════════════════════════════════════════════════════════════════════ */
 
-.article-content pre,
-.post-editor-content .ProseMirror pre {
-  margin-block: 2rem;
-  overflow-x: auto;
-  padding: 1.25rem 3rem 1.25rem 1.5rem; /* right room for copy button */
-  border: 1px solid #30363d;
-  border-radius: 0.875rem;
-  background: #0d1117;
-  color: #e6edf3;
-  -webkit-overflow-scrolling: touch;
-}
+@layer components {
+  /*
+   * Code blocks intentionally use a dark code surface in both themes.
+   *
+   * This creates a stable developer-focused reading experience and prevents
+   * syntax highlighting from becoming unreadable when the application theme
+   * changes.
+   */
 
-.article-content pre code,
-.post-editor-content .ProseMirror pre code {
-  color: #e6edf3;
-  font-family:
-    var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
-  font-size: 0.875rem;
-  line-height: 1.75;
-  tab-size: 2;
-}
-
-/* Visible selection on the dark surface (beats the editor-wide rule) */
-.article-content pre::selection,
-.article-content pre ::selection,
-.post-editor-content .ProseMirror pre::selection,
-.post-editor-content .ProseMirror pre ::selection {
-  background: #264f78;
-  color: #fff;
-}
-
-/* ── Copy button ──────────────────────────────────────────────────── */
-
-.code-block {
-  position: relative;
-  margin-block: 2rem;
-}
-
-.code-block pre {
-  margin: 0; /* spacing lives on the wrapper */
-}
-
-.code-copy-btn {
-  position: absolute;
-  top: 0.6rem;
-  right: 0.6rem;
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border: 1px solid #30363d;
-  border-radius: 0.5rem;
-  background: #161b22;
-  color: #8b949e;
-  cursor: pointer;
-  opacity: 0;
-  transition:
-    opacity 150ms ease,
-    color 150ms ease,
-    background-color 150ms ease;
-}
-
-.code-block:hover .code-copy-btn,
-.code-copy-btn:focus-visible,
-.code-copy-btn[data-copied] {
-  opacity: 1;
-}
-
-.code-copy-btn:hover {
-  background: #21262d;
-  color: #e6edf3;
-}
-
-.code-copy-btn[data-copied] {
-  color: #7ee787;
-}
-
-/* No hover on touch devices, so always show it */
-@media (hover: none) {
-  .code-copy-btn {
-    opacity: 1;
-  }
-}
-
-@media (max-width: 640px) {
   .article-content pre,
   .post-editor-content .ProseMirror pre {
-    padding: 1rem 2.75rem 1rem 1rem;
-    border-radius: 0.75rem;
+    margin-block: 2rem;
+    overflow-x: auto;
+    padding: 1.25rem 3rem 1.25rem 1.5rem; /* right room for copy button */
+    border: 1px solid #30363d;
+    border-radius: 0.875rem;
+    background: #0d1117;
+    color: #e6edf3;
+    -webkit-overflow-scrolling: touch;
   }
-}
 
-/* ─────────────────────────────────────────────────────────────────────────
+  .article-content pre code,
+  .post-editor-content .ProseMirror pre code {
+    color: #e6edf3;
+    font-family:
+      var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+      "Liberation Mono", "Courier New", monospace;
+    font-size: 0.875rem;
+    line-height: 1.75;
+    tab-size: 2;
+  }
+
+  /* Visible selection on the dark surface (beats the editor-wide rule) */
+  .article-content pre::selection,
+  .article-content pre ::selection,
+  .post-editor-content .ProseMirror pre::selection,
+  .post-editor-content .ProseMirror pre ::selection {
+    background: #264f78;
+    color: #fff;
+  }
+
+  /* ── Copy button ──────────────────────────────────────────────────── */
+
+  .code-block {
+    position: relative;
+    margin-block: 2rem;
+  }
+
+  .code-block pre {
+    margin: 0; /* spacing lives on the wrapper */
+  }
+
+  .code-copy-btn {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid #30363d;
+    border-radius: 0.5rem;
+    background: #161b22;
+    color: #8b949e;
+    cursor: pointer;
+    opacity: 0;
+    transition:
+      opacity 150ms ease,
+      color 150ms ease,
+      background-color 150ms ease;
+  }
+
+  .code-block:hover .code-copy-btn,
+  .code-copy-btn:focus-visible,
+  .code-copy-btn[data-copied] {
+    opacity: 1;
+  }
+
+  .code-copy-btn:hover {
+    background: #21262d;
+    color: #e6edf3;
+  }
+
+  .code-copy-btn[data-copied] {
+    color: #7ee787;
+  }
+
+  /* No hover on touch devices, so always show it */
+  @media (hover: none) {
+    .code-copy-btn {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .article-content pre,
+    .post-editor-content .ProseMirror pre {
+      padding: 1rem 2.75rem 1rem 1rem;
+      border-radius: 0.75rem;
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────────────────
      Comments
      ─────────────────────────────────────────────────────────────────────── */
 
-.article-content pre .hljs-comment,
-.post-editor-content pre .hljs-comment,
-.article-content pre .hljs-quote,
-.post-editor-content pre .hljs-quote {
-  color: #8b949e;
-}
+  .article-content pre .hljs-comment,
+  .post-editor-content pre .hljs-comment,
+  .article-content pre .hljs-quote,
+  .post-editor-content pre .hljs-quote {
+    color: #8b949e;
+  }
 
-/* Keywords */
+  /* Keywords */
 
-.article-content pre .hljs-keyword,
-.post-editor-content pre .hljs-keyword,
-.article-content pre .hljs-selector-tag,
-.post-editor-content pre .hljs-selector-tag {
-  color: #ff7b72;
-}
+  .article-content pre .hljs-keyword,
+  .post-editor-content pre .hljs-keyword,
+  .article-content pre .hljs-selector-tag,
+  .post-editor-content pre .hljs-selector-tag {
+    color: #ff7b72;
+  }
 
-/* Strings */
+  /* Strings */
 
-.article-content pre .hljs-string,
-.post-editor-content pre .hljs-string {
-  color: #a5d6ff;
-}
+  .article-content pre .hljs-string,
+  .post-editor-content pre .hljs-string {
+    color: #a5d6ff;
+  }
 
-/* Numbers / literals */
+  /* Numbers / literals */
 
-.article-content pre .hljs-number,
-.post-editor-content pre .hljs-number,
-.article-content pre .hljs-literal,
-.post-editor-content pre .hljs-literal {
-  color: #79c0ff;
-}
+  .article-content pre .hljs-number,
+  .post-editor-content pre .hljs-number,
+  .article-content pre .hljs-literal,
+  .post-editor-content pre .hljs-literal {
+    color: #79c0ff;
+  }
 
-/* Functions / titles */
+  /* Functions / titles */
 
-.article-content pre .hljs-title,
-.post-editor-content pre .hljs-title,
-.article-content pre .hljs-title.function_,
-.post-editor-content pre .hljs-title.function_,
-.article-content pre .hljs-function,
-.post-editor-content pre .hljs-function {
-  color: #d2a8ff;
-}
+  .article-content pre .hljs-title,
+  .post-editor-content pre .hljs-title,
+  .article-content pre .hljs-title.function_,
+  .post-editor-content pre .hljs-title.function_,
+  .article-content pre .hljs-function,
+  .post-editor-content pre .hljs-function {
+    color: #d2a8ff;
+  }
 
-/* Built-in / variables */
+  /* Built-in / variables */
 
-.article-content pre .hljs-built_in,
-.post-editor-content pre .hljs-built_in,
-.article-content pre .hljs-variable,
-.post-editor-content pre .hljs-variable,
-.article-content pre .hljs-type,
-.post-editor-content pre .hljs-type {
-  color: #ffa657;
-}
+  .article-content pre .hljs-built_in,
+  .post-editor-content pre .hljs-built_in,
+  .article-content pre .hljs-variable,
+  .post-editor-content pre .hljs-variable,
+  .article-content pre .hljs-type,
+  .post-editor-content pre .hljs-type {
+    color: #ffa657;
+  }
 
-/* Attributes */
+  /* Attributes */
 
-.article-content pre .hljs-attr,
-.post-editor-content pre .hljs-attr {
-  color: #79c0ff;
-}
+  .article-content pre .hljs-attr,
+  .post-editor-content pre .hljs-attr {
+    color: #79c0ff;
+  }
 
-/* Meta */
+  /* Meta */
 
-.article-content pre .hljs-meta,
-.post-editor-content pre .hljs-meta {
-  color: #8b949e;
-}
+  .article-content pre .hljs-meta,
+  .post-editor-content pre .hljs-meta {
+    color: #8b949e;
+  }
 
-/* Regexp */
+  /* Regexp */
 
-.article-content pre .hljs-regexp,
-.post-editor-content pre .hljs-regexp {
-  color: #7ee787;
-}
+  .article-content pre .hljs-regexp,
+  .post-editor-content pre .hljs-regexp {
+    color: #7ee787;
+  }
 
-/* Parameters */
+  /* Parameters */
 
-.article-content pre .hljs-params,
-.post-editor-content pre .hljs-params {
-  color: #e6edf3;
-}
+  .article-content pre .hljs-params,
+  .post-editor-content pre .hljs-params {
+    color: #e6edf3;
+  }
 
-/* Diff */
+  /* Diff */
 
-.article-content pre .hljs-addition,
-.post-editor-content pre .hljs-addition {
-  color: #7ee787;
-}
+  .article-content pre .hljs-addition,
+  .post-editor-content pre .hljs-addition {
+    color: #7ee787;
+  }
 
-.article-content pre .hljs-deletion,
-.post-editor-content pre .hljs-deletion {
-  color: #ffa198;
-}
+  .article-content pre .hljs-deletion,
+  .post-editor-content pre .hljs-deletion {
+    color: #ffa198;
+  }
 
-/* Emphasis */
+  /* Emphasis */
 
-.article-content pre .hljs-emphasis,
-.post-editor-content pre .hljs-emphasis {
-  font-style: italic;
-}
+  .article-content pre .hljs-emphasis,
+  .post-editor-content pre .hljs-emphasis {
+    font-style: italic;
+  }
 
-/* Strong */
+  /* Strong */
 
-.article-content pre .hljs-strong,
-.post-editor-content pre .hljs-strong {
-  font-weight: 700;
-}
+  .article-content pre .hljs-strong,
+  .post-editor-content pre .hljs-strong {
+    font-weight: 700;
+  }
 
-/* ═════════════════════════════════════════════════════════════════════════
+  /* ═════════════════════════════════════════════════════════════════════════
      TIPTAP EDITOR
      ═════════════════════════════════════════════════════════════════════════ */
 
-.post-editor-content .ProseMirror {
-  min-height: 20rem;
-  outline: none;
+  .post-editor-content .ProseMirror {
+    min-height: 20rem;
+    outline: none;
 
-  color: hsl(var(--prose));
-  font-family: var(--font-sans);
-  font-size: 1.0625rem;
-  line-height: 1.85;
+    color: hsl(var(--prose));
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.85;
 
-  caret-color: hsl(var(--brand));
-}
+    caret-color: hsl(var(--brand));
+  }
 
-.post-editor-content .ProseMirror > *:first-child {
-  margin-top: 0;
-}
+  .post-editor-content .ProseMirror > *:first-child {
+    margin-top: 0;
+  }
 
-.post-editor-content .ProseMirror > *:last-child {
-  margin-bottom: 0;
-}
+  .post-editor-content .ProseMirror > *:last-child {
+    margin-bottom: 0;
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Placeholder
      ─────────────────────────────────────────────────────────────────────── */
 
-.post-editor-content .ProseMirror p.is-editor-empty:first-child::before {
-  content: attr(data-placeholder);
-  float: left;
-  height: 0;
-  color: hsl(var(--muted-foreground) / 0.55);
-  pointer-events: none;
-}
+  .post-editor-content .ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    color: hsl(var(--muted-foreground) / 0.55);
+    pointer-events: none;
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Paragraphs
      ─────────────────────────────────────────────────────────────────────── */
 
-.post-editor-content .ProseMirror p {
-  margin-block: 1.25rem;
-}
+  .post-editor-content .ProseMirror p {
+    margin-block: 1.25rem;
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Headings
      ─────────────────────────────────────────────────────────────────────── */
 
-.post-editor-content .ProseMirror h1,
-.post-editor-content .ProseMirror h2,
-.post-editor-content .ProseMirror h3 {
-  color: hsl(var(--prose-heading));
-  font-family: var(--font-serif);
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  text-wrap: balance;
-}
+  .post-editor-content .ProseMirror h1,
+  .post-editor-content .ProseMirror h2,
+  .post-editor-content .ProseMirror h3 {
+    color: hsl(var(--prose-heading));
+    font-family: var(--font-serif);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
 
-.post-editor-content .ProseMirror h1 {
-  margin-top: 3rem;
-  margin-bottom: 1rem;
-  font-size: clamp(2rem, 5vw, 2.75rem);
-  line-height: 1.1;
-}
+  .post-editor-content .ProseMirror h1 {
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    line-height: 1.1;
+  }
 
-.post-editor-content .ProseMirror h2 {
-  margin-top: 2.75rem;
-  margin-bottom: 0.85rem;
-  font-size: clamp(1.6rem, 4vw, 2.1rem);
-  line-height: 1.2;
-}
+  .post-editor-content .ProseMirror h2 {
+    margin-top: 2.75rem;
+    margin-bottom: 0.85rem;
+    font-size: clamp(1.6rem, 4vw, 2.1rem);
+    line-height: 1.2;
+  }
 
-.post-editor-content .ProseMirror h3 {
-  margin-top: 2.25rem;
-  margin-bottom: 0.7rem;
-  font-size: clamp(1.3rem, 3vw, 1.6rem);
-  line-height: 1.25;
-}
+  .post-editor-content .ProseMirror h3 {
+    margin-top: 2.25rem;
+    margin-bottom: 0.7rem;
+    font-size: clamp(1.3rem, 3vw, 1.6rem);
+    line-height: 1.25;
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Links
      ─────────────────────────────────────────────────────────────────────── */
 
-.post-editor-content .ProseMirror a {
-  color: hsl(var(--prose-link));
-  text-decoration: underline;
-  text-decoration-color: hsl(var(--prose-link) / 0.35);
-  text-underline-offset: 3px;
-  transition:
-    color 150ms ease,
-    text-decoration-color 150ms ease;
-}
+  .post-editor-content .ProseMirror a {
+    color: hsl(var(--prose-link));
+    text-decoration: underline;
+    text-decoration-color: hsl(var(--prose-link) / 0.35);
+    text-underline-offset: 3px;
+    transition:
+      color 150ms ease,
+      text-decoration-color 150ms ease;
+  }
 
-.post-editor-content .ProseMirror a:hover {
-  color: hsl(var(--link-hover));
-  text-decoration-color: currentColor;
-}
+  .post-editor-content .ProseMirror a:hover {
+    color: hsl(var(--link-hover));
+    text-decoration-color: currentColor;
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Inline code
      ─────────────────────────────────────────────────────────────────────── */
 
-.post-editor-content .ProseMirror :not(pre) > code {
-  border: 1px solid hsl(var(--border));
-  border-radius: 0.4rem;
-  background: hsl(var(--surface-subtle));
-  padding: 0.15rem 0.4rem;
+  .post-editor-content .ProseMirror :not(pre) > code {
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.4rem;
+    background: hsl(var(--surface-subtle));
+    padding: 0.15rem 0.4rem;
 
-  color: hsl(var(--prose-code));
-  font-family: var(--font-mono);
-  font-size: 0.85em;
-  font-weight: 500;
-}
+    color: hsl(var(--prose-code));
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    font-weight: 500;
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Lists
      ─────────────────────────────────────────────────────────────────────── */
 
-.post-editor-content .ProseMirror ul,
-.post-editor-content .ProseMirror ol {
-  margin-block: 1.5rem;
-  padding-left: 1.5rem;
-}
+  .post-editor-content .ProseMirror ul,
+  .post-editor-content .ProseMirror ol {
+    margin-block: 1.5rem;
+    padding-left: 1.5rem;
+  }
 
-.post-editor-content .ProseMirror ul {
-  list-style: disc;
-}
+  .post-editor-content .ProseMirror ul {
+    list-style: disc;
+  }
 
-.post-editor-content .ProseMirror ol {
-  list-style: decimal;
-}
+  .post-editor-content .ProseMirror ol {
+    list-style: decimal;
+  }
 
-.post-editor-content .ProseMirror li {
-  margin-block: 0.5rem;
-  padding-left: 0.3rem;
-}
+  .post-editor-content .ProseMirror li {
+    margin-block: 0.5rem;
+    padding-left: 0.3rem;
+  }
 
-.post-editor-content .ProseMirror li::marker {
-  color: hsl(var(--brand));
-}
+  .post-editor-content .ProseMirror li::marker {
+    color: hsl(var(--brand));
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Blockquote
      ─────────────────────────────────────────────────────────────────────── */
 
-.post-editor-content .ProseMirror blockquote {
-  margin-block: 2rem;
+  .post-editor-content .ProseMirror blockquote {
+    margin-block: 2rem;
 
-  border-left: 3px solid hsl(var(--brand));
-  border-radius: 0 0.5rem 0.5rem 0;
+    border-left: 3px solid hsl(var(--brand));
+    border-radius: 0 0.5rem 0.5rem 0;
 
-  background: hsl(var(--brand) / 0.05);
-  padding: 1rem 1.25rem;
+    background: hsl(var(--brand) / 0.05);
+    padding: 1rem 1.25rem;
 
-  color: hsl(var(--prose-quote));
-  font-style: italic;
-}
+    color: hsl(var(--prose-quote));
+    font-style: italic;
+  }
 
-.post-editor-content .ProseMirror blockquote p {
-  margin-block: 0.5rem;
-}
+  .post-editor-content .ProseMirror blockquote p {
+    margin-block: 0.5rem;
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Horizontal rule
      ─────────────────────────────────────────────────────────────────────── */
 
-.post-editor-content .ProseMirror hr {
-  margin-block: 2.5rem;
-  border: 0;
-  border-top: 1px solid hsl(var(--border));
-}
+  .post-editor-content .ProseMirror hr {
+    margin-block: 2.5rem;
+    border: 0;
+    border-top: 1px solid hsl(var(--border));
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Images
      ─────────────────────────────────────────────────────────────────────── */
 
-.post-editor-content .ProseMirror img {
-  display: block;
+  .post-editor-content .ProseMirror img {
+    display: block;
 
-  max-width: 100%;
-  height: auto;
+    max-width: 100%;
+    height: auto;
 
-  margin-block: 2rem;
+    margin-block: 2rem;
 
-  border: 1px solid hsl(var(--border));
-  border-radius: 0.875rem;
-}
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.875rem;
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Tables
      ─────────────────────────────────────────────────────────────────────── */
 
-.post-editor-content .ProseMirror table {
-  width: 100%;
-  margin-block: 2rem;
-  border-collapse: collapse;
-  overflow: hidden;
+  .post-editor-content .ProseMirror table {
+    width: 100%;
+    margin-block: 2rem;
+    border-collapse: collapse;
+    overflow: hidden;
 
-  font-size: 0.9rem;
-}
+    font-size: 0.9rem;
+  }
 
-.post-editor-content .ProseMirror th,
-.post-editor-content .ProseMirror td {
-  min-width: 120px;
+  .post-editor-content .ProseMirror th,
+  .post-editor-content .ProseMirror td {
+    min-width: 120px;
 
-  border: 1px solid hsl(var(--border));
+    border: 1px solid hsl(var(--border));
 
-  padding: 0.7rem 0.9rem;
+    padding: 0.7rem 0.9rem;
 
-  text-align: left;
-}
+    text-align: left;
+  }
 
-.post-editor-content .ProseMirror th {
-  background: hsl(var(--surface-subtle));
-  color: hsl(var(--prose-heading));
-  font-weight: 650;
-}
+  .post-editor-content .ProseMirror th {
+    background: hsl(var(--surface-subtle));
+    color: hsl(var(--prose-heading));
+    font-weight: 650;
+  }
 
-.post-editor-content .ProseMirror tr:nth-child(even) td {
-  background: hsl(var(--surface-subtle) / 0.35);
-}
+  .post-editor-content .ProseMirror tr:nth-child(even) td {
+    background: hsl(var(--surface-subtle) / 0.35);
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Selection
      ─────────────────────────────────────────────────────────────────────── */
 
-.post-editor-content .ProseMirror ::selection {
-  background: hsl(var(--brand) / 0.22);
-}
+  .post-editor-content .ProseMirror ::selection {
+    background: hsl(var(--brand) / 0.22);
+  }
 
-/* ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
      Mobile editor
      ─────────────────────────────────────────────────────────────────────── */
 
-@media (max-width: 640px) {
-  .post-editor-content .ProseMirror {
-    min-height: 28rem;
-    font-size: 1rem;
-    line-height: 1.8;
-  }
+  @media (max-width: 640px) {
+    .post-editor-content .ProseMirror {
+      min-height: 28rem;
+      font-size: 1rem;
+      line-height: 1.8;
+    }
 
-  .post-editor-content .ProseMirror pre {
-    margin-inline: -0.25rem;
-    border-radius: 0.75rem;
-    padding: 1rem;
+    .post-editor-content .ProseMirror pre {
+      margin-inline: -0.25rem;
+      border-radius: 0.75rem;
+      padding: 1rem;
+    }
   }
 }
 

@@ -1,5 +1,5 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
-import { IsOptional } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 @InputType()
 export class PostFiltersInput {
@@ -8,10 +8,17 @@ export class PostFiltersInput {
   categoryId?: number;
 
   @IsOptional()
+  @IsString()
+  @Field({ nullable: true })
+  categorySlug?: string;
+
+  @IsOptional()
+  @IsString()
   @Field({ nullable: true })
   tag?: string;
 
   @IsOptional()
+  @IsString()
   @Field({ nullable: true })
   search?: string;
 }

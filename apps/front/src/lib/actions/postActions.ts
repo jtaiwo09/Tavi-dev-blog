@@ -6,7 +6,9 @@ import {
   CREATE_POST_MUTATION,
   DELETE_POST_MUTATION,
   GET_POST_BY_ID,
+  GET_POST_BY_SLUG,
   GET_POSTS,
+  GET_POSTS_FOR_SITEMAP,
   GET_USER_POSTS,
   UPDATE_POST_MUTATION,
 } from "@/lib/gqlQueries";
@@ -16,12 +18,11 @@ import { PostFormState } from "@/lib/types/formState";
 import { PostFormSchema } from "@/lib/zodSchemas/schema";
 import { uploadThumbnail } from "@/lib/upload";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import type { PostFilters } from "@/lib/types/post";
 import { getErrorMessage } from "../utils";
 
 export const fetchPosts = async ({
-  page,
+  page = 1,
   pageSize,
   filters,
 }: {
@@ -29,20 +30,48 @@ export const fetchPosts = async ({
   pageSize?: number;
   filters?: PostFilters;
 }) => {
-  const { skip, take } = transformTakeSkip({ page, pageSize });
+  const { skip, take } = transformTakeSkip({
+    page,
+    pageSize,
+  });
+
+  const normalizedFilters =
+    filters &&
+    Object.fromEntries(
+      Object.entries(filters).filter(([, value]) =>
+        typeof value === "string"
+          ? value.trim().length > 0
+          : value !== undefined,
+      ),
+    );
+
   const data = await fetchGraphQL(print(GET_POSTS), {
     skip,
     take,
-    filters: filters ?? null,
+    filters:
+      normalizedFilters && Object.keys(normalizedFilters).length > 0
+        ? normalizedFilters
+        : null,
   });
 
-  return { posts: data.posts.posts as Post[], totalPosts: data.posts.total };
+  return {
+    posts: data.posts.posts as Post[],
+    totalPosts: data.posts.total,
+  };
 };
 
 export const fetchPostById = async (id: number) => {
   const data = await fetchGraphQL(print(GET_POST_BY_ID), { id });
 
   return data.getPostById as Post;
+};
+
+export const fetchPostBySlug = async (slug: string) => {
+  const data = await fetchGraphQL(print(GET_POST_BY_SLUG), {
+    slug,
+  });
+
+  return data.getPostBySlug as Post;
 };
 
 export async function fetchUserPosts({
@@ -52,7 +81,11 @@ export async function fetchUserPosts({
   page?: number;
   pageSize: number;
 }) {
-  const { take, skip } = transformTakeSkip({ page, pageSize });
+  const { take, skip } = transformTakeSkip({
+    page,
+    pageSize,
+  });
+
   const data = await authFetchGraphQL(print(GET_USER_POSTS), {
     take,
     skip,
@@ -118,6 +151,7 @@ export async function saveNewPost(
     });
 
     revalidatePath("/user/posts");
+    revalidatePath("/blog");
 
     return {
       message: data.createPost.message,
@@ -162,11 +196,9 @@ export async function updatePost(
   if (postId === undefined) {
     return {
       data: rawData,
-
       errors: {
         postId: ["The post could not be identified."],
       },
-
       message: "We couldn't identify the post you're trying to update.",
     };
   }
@@ -180,7 +212,6 @@ export async function updatePost(
 
     const input = {
       postId,
-
       ...inputs,
 
       ...(thumbnailUrl
@@ -195,6 +226,7 @@ export async function updatePost(
     });
 
     revalidatePath("/user/posts");
+    revalidatePath("/blog");
 
     return {
       message: data.updatePost.message,
@@ -218,5 +250,29 @@ export async function deletePost(postId: number) {
     postId,
   });
 
+  revalidatePath("/user/posts");
+  revalidatePath("/blog");
+
   return data.deletePost;
+}
+
+const SITEMAP_BATCH_SIZE = 1000;
+
+export async function fetchPostsForSitemap({
+  skip = 0,
+}: {
+  skip?: number;
+} = {}): Promise<{
+  total: number;
+  posts: Post[];
+}> {
+  const data = await fetchGraphQL(print(GET_POSTS_FOR_SITEMAP), {
+    skip,
+    take: SITEMAP_BATCH_SIZE,
+  });
+
+  return {
+    posts: data.posts.posts,
+    total: data.posts.total,
+  };
 }

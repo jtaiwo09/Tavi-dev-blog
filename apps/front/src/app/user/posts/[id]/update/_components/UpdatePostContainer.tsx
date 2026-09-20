@@ -14,7 +14,7 @@ type Props = {
 };
 
 const UpdatePostContainer = ({ post, categories, tags }: Props) => {
-  const [state, action] = useActionState(updatePost, {
+  const [state, action, isPending] = useActionState(updatePost, {
     data: {
       postId: post.id,
       title: post.title,
@@ -31,6 +31,7 @@ const UpdatePostContainer = ({ post, categories, tags }: Props) => {
     <UpsertPostForm
       state={state}
       formAction={action}
+      isPending={isPending}
       categories={categories}
       tags={tags}
     />

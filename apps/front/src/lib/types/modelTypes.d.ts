@@ -36,8 +36,9 @@ export type Category = {
   id: number;
   name: string;
   slug: string;
-  createdAt: Date;
-  updatedAt: Date;
+  description: string | null;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export type User = {

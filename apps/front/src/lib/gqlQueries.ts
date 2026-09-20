@@ -30,6 +30,7 @@ export const GET_POSTS = gql`
         tags {
           id
           name
+          slug
         }
       }
       total
@@ -68,6 +69,49 @@ export const GET_POST_BY_ID = gql`
       tags {
         id
         name
+      }
+    }
+  }
+`;
+
+export const GET_POST_BY_SLUG = gql`
+  query getPostBySlug($slug: String!) {
+    getPostBySlug(slug: $slug) {
+      id
+      title
+      excerpt
+      thumbnail
+      content
+      createdAt
+      updatedAt
+      publishedAt
+      slug
+      status
+      readingTimeMinutes
+      wordCount
+
+      author {
+        id
+        name
+        avatar
+      }
+
+      category {
+        id
+        name
+        slug
+        description
+      }
+
+      tags {
+        id
+        name
+        slug
+      }
+
+      _count {
+        likes
+        comments
       }
     }
   }
@@ -306,6 +350,19 @@ export const RESEND_VERIFICATION_EMAIL_MUTATION = gql`
   mutation ResendVerificationEmail($email: String!) {
     resendVerificationEmail(email: $email) {
       message
+    }
+  }
+`;
+
+export const GET_POSTS_FOR_SITEMAP = gql`
+  query GetPostsForSitemap($skip: Int!, $take: Int!) {
+    posts(skip: $skip, take: $take) {
+      posts {
+        slug
+        createdAt
+        updatedAt
+      }
+      total
     }
   }
 `;

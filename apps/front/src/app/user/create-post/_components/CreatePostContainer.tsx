@@ -11,12 +11,13 @@ type Props = {
 };
 
 const CreatePostContainer = ({ categories, tags }: Props) => {
-  const [state, action] = useActionState(saveNewPost, undefined);
+  const [state, action, isPending] = useActionState(saveNewPost, undefined);
 
   return (
     <UpsertPostForm
       state={state}
       formAction={action}
+      isPending={isPending}
       categories={categories}
       tags={tags}
     />
