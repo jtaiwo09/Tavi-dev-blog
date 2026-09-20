@@ -25,7 +25,7 @@ type Props = {
 };
 
 const Profile = ({ user }: Props) => {
-  const { toggle } = useSidebar();
+  const { closeSidebar } = useSidebar();
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
@@ -79,7 +79,7 @@ const Profile = ({ user }: Props) => {
         <DropdownMenuSeparator />
 
         {/* Profile */}
-        <DropdownMenuItem asChild onClick={toggle}>
+        <DropdownMenuItem asChild onClick={closeSidebar}>
           <Link href="/user/account">
             <User className="size-4 text-muted-foreground" />
             <span>My profile</span>
@@ -87,7 +87,7 @@ const Profile = ({ user }: Props) => {
         </DropdownMenuItem>
 
         {/* Create post */}
-        <DropdownMenuItem asChild onClick={toggle}>
+        <DropdownMenuItem asChild onClick={closeSidebar}>
           <Link href="/user/create-post">
             <Pencil className="size-4 text-muted-foreground" />
             <span>Create new post</span>
@@ -95,7 +95,7 @@ const Profile = ({ user }: Props) => {
         </DropdownMenuItem>
 
         {/* My posts */}
-        <DropdownMenuItem asChild onClick={toggle}>
+        <DropdownMenuItem asChild onClick={closeSidebar}>
           <Link href="/user/posts">
             <List className="size-4 text-muted-foreground" />
             <span>My posts</span>

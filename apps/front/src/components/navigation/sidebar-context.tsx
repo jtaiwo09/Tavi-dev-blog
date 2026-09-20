@@ -9,7 +9,8 @@ import {
 
 type SidebarContextValue = {
   open: boolean;
-  toggle: () => void;
+  openSidebar: () => void;
+  closeSidebar: () => void;
 };
 
 const SidebarContext = createContext<SidebarContextValue | null>(null);
@@ -17,12 +18,16 @@ const SidebarContext = createContext<SidebarContextValue | null>(null);
 export const SidebarProvider = ({ children }: PropsWithChildren) => {
   const [open, setOpen] = useState(false);
 
-  const toggle = () => {
-    setOpen((prev) => !prev);
+  const openSidebar = () => {
+    setOpen(true);
+  };
+
+  const closeSidebar = () => {
+    setOpen(false);
   };
 
   return (
-    <SidebarContext.Provider value={{ open, toggle }}>
+    <SidebarContext.Provider value={{ open, openSidebar, closeSidebar }}>
       {children}
     </SidebarContext.Provider>
   );

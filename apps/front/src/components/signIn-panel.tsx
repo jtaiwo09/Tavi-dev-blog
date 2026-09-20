@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useSidebar } from "./navigation/sidebar-context";
 
 const SignInPanel = () => {
-  const { toggle } = useSidebar();
+  const { closeSidebar } = useSidebar();
   return (
     <div className="flex items-center gap-1">
       <Button size="default" variant="ghost" asChild>
@@ -12,7 +12,7 @@ const SignInPanel = () => {
           className="
           text-sm font-medium
         "
-          onClick={toggle}
+          onClick={closeSidebar}
         >
           Sign in
         </Link>
@@ -23,7 +23,7 @@ const SignInPanel = () => {
           className="
           text-sm font-semibold
         "
-          onClick={toggle}
+          onClick={closeSidebar}
         >
           Get started
         </Link>

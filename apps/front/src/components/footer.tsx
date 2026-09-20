@@ -7,6 +7,7 @@ const navigation = [
   { label: "Home", href: "/" },
   { label: "About", href: "#about" },
   { label: "Writing", href: "#latest-posts" },
+  { label: "My posts", href: "/user/posts" },
 ];
 
 const topics = [

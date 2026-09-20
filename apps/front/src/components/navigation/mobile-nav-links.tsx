@@ -13,7 +13,7 @@ interface IProps {
 }
 
 const MobileNavLinks = ({ user }: IProps) => {
-  const { toggle } = useSidebar();
+  const { closeSidebar } = useSidebar();
 
   return (
     <nav className="ml-auto flex flex-col gap-1 md:flex-row md:items-center md:gap-1">
@@ -21,7 +21,7 @@ const MobileNavLinks = ({ user }: IProps) => {
 
       <Link
         href="/blog"
-        onClick={toggle}
+        onClick={closeSidebar}
         className="group flex min-h-11 items-center gap-3
             rounded-xs px-3
             text-sm font-medium
@@ -45,7 +45,7 @@ const MobileNavLinks = ({ user }: IProps) => {
 
       {/* Contact */}
       <Link
-        href="https://ktaiwo.vercel.app/#contact"
+        href="#contact"
         className="
             group flex min-h-11 items-center gap-3
             rounded-xs px-3

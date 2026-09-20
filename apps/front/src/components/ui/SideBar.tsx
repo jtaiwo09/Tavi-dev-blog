@@ -12,7 +12,7 @@ type Props = PropsWithChildren<{
 }>;
 
 const SideBar = ({ children, triggerIcon, triggerClassName }: Props) => {
-  const { open, toggle } = useSidebar();
+  const { open, closeSidebar, openSidebar } = useSidebar();
 
   useEffect(() => {
     if (!open) return;
@@ -40,7 +40,7 @@ const SideBar = ({ children, triggerIcon, triggerClassName }: Props) => {
       >
         <Link
           href="/"
-          onClick={toggle}
+          onClick={closeSidebar}
           className="group flex items-center gap-3"
         >
           <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand text-xs font-bold text-brand-foreground">
@@ -57,7 +57,7 @@ const SideBar = ({ children, triggerIcon, triggerClassName }: Props) => {
           aria-label={open ? "Close navigation" : "Open navigation"}
           aria-expanded={open}
           aria-controls="mobile-navigation"
-          onClick={toggle}
+          onClick={openSidebar}
           className="
             flex size-9 items-center justify-center
             rounded-xl
@@ -78,9 +78,9 @@ const SideBar = ({ children, triggerIcon, triggerClassName }: Props) => {
       {/* Backdrop */}
       <div
         aria-hidden="true"
-        onClick={toggle}
+        onClick={closeSidebar}
         className={cn(
-          "fixed inset-0 z-[55] bg-black/20 backdrop-blur-[2px]",
+          "fixed inset-0 z-55 bg-black/20 backdrop-blur-[2px]",
           "transition-opacity duration-300",
           open
             ? "pointer-events-auto opacity-100"
@@ -93,7 +93,7 @@ const SideBar = ({ children, triggerIcon, triggerClassName }: Props) => {
         id="mobile-navigation"
         aria-hidden={!open}
         className={cn(
-          "fixed inset-y-0 left-0 z-[60]",
+          "fixed inset-y-0 left-0 z-60",
           "flex w-[min(21rem,88vw)] flex-col",
           "border-r border-border/70",
           "bg-background shadow-2xl",
@@ -102,11 +102,7 @@ const SideBar = ({ children, triggerIcon, triggerClassName }: Props) => {
         )}
       >
         <div className="flex h-20 shrink-0 items-center justify-between border-b border-border/70 px-5">
-          <Link
-            href="/"
-            onClick={toggle}
-            className="group flex items-center gap-3"
-          >
+          <Link href="/" className="group flex items-center gap-3">
             <span className="flex size-8 items-center justify-center rounded-full bg-brand text-xs font-bold text-brand-foreground">
               T
             </span>
@@ -119,7 +115,7 @@ const SideBar = ({ children, triggerIcon, triggerClassName }: Props) => {
           <button
             type="button"
             aria-label="Close navigation"
-            onClick={toggle}
+            onClick={closeSidebar}
             className="
               flex size-9 items-center justify-center
               rounded-xl

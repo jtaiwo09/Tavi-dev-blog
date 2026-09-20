@@ -1,6 +1,3 @@
-import { getCurrentUser } from "@/lib/actions/users";
-import { getSession } from "@/lib/session";
-
 import DesktopNavbar from "./desktop-navbar";
 import MobileNavbar from "./mobile-navbar";
 import Navbar from "./navbar";

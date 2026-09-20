@@ -34,7 +34,7 @@ const Hero = () => {
 
             <div className="mt-7 flex items-center gap-4">
               <Link
-                href="/blog"
+                href="#latest-posts"
                 className="group inline-flex items-center gap-2 text-sm font-semibold text-foreground"
               >
                 Start reading
@@ -82,7 +82,7 @@ const Hero = () => {
               </div>
 
               <div>
-                <h2 className="mt-7 max-w-2xl text-balance font-serif text-4xl font-medium leading-[1.02] tracking-[-0.04em] text-foreground sm:text-5xl md:text-6xl">
+                <h2 className="mt-7 max-w-2xl text-balance font-serif text-4xl font-medium leading-[1.02] tracking-[-0.02em] text-foreground sm:text-5xl md:text-6xl">
                   Thinking clearly about the things we build.
                 </h2>
 
