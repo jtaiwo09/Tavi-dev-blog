@@ -14,6 +14,7 @@ const Providers = ({ children }: Props) => {
         attribute="class"
         defaultTheme="system"
         enableSystem
+        enableColorScheme
         disableTransitionOnChange
       >
         {children}

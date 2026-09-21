@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+@custom-variant dark (&:where(.dark, .dark *));
 @source "../components/**/*.{ts,tsx}";
 
 @theme {
@@ -174,7 +174,8 @@
    LIGHT THEME
    ═══════════════════════════════════════════════ */
 
-:root {
+:root,
+.light {
   /* ─────────────────────────────────────────────
      Base
      ───────────────────────────────────────────── */

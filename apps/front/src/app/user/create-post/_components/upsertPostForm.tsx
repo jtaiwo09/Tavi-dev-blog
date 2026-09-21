@@ -100,8 +100,7 @@ const UpsertPostForm = ({
                 placeholder:text-muted-foreground/30
                 focus-visible:ring-0
                 sm:text-5xl
-                md:text-6xl
-                lg:text-[4.5rem]
+                md:text-5xl
               "
             />
           </FormField>
