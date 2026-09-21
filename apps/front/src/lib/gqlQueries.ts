@@ -253,6 +253,14 @@ export const UPDATE_POST_MUTATION = gql`
   }
 `;
 
+export const TOGGLE_POST_STATUS_MUTATION = gql`
+  mutation UpdatePostStatus($postId: Int!) {
+    updatePostStatus(postId: $postId) {
+      message
+    }
+  }
+`;
+
 export const DELETE_POST_MUTATION = gql`
   mutation DeletePost($postId: Int!) {
     deletePost(postId: $postId)

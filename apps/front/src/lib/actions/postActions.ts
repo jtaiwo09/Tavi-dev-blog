@@ -10,6 +10,7 @@ import {
   GET_POSTS,
   GET_POSTS_FOR_SITEMAP,
   GET_USER_POSTS,
+  TOGGLE_POST_STATUS_MUTATION,
   UPDATE_POST_MUTATION,
 } from "@/lib/gqlQueries";
 import { transformTakeSkip } from "@/lib/helpers";
@@ -251,6 +252,32 @@ export async function updatePost(
         "Something went wrong while updating your post. Please try again.",
       ),
       data: rawData,
+    };
+  }
+}
+
+export async function togglePostStatus(postId: number) {
+  try {
+    const data = await authFetchGraphQL(print(TOGGLE_POST_STATUS_MUTATION), {
+      postId,
+    });
+
+    revalidatePath("/user/posts");
+    revalidatePath("/blog");
+
+    return {
+      success: true,
+      message: data.togglePostStatus.message,
+    };
+  } catch (error) {
+    console.error("Failed to toggle post status:", error);
+
+    return {
+      success: false,
+      message: getErrorMessage(
+        error,
+        "Something went wrong while updating the post status.",
+      ),
     };
   }
 }

@@ -146,6 +146,7 @@ input PostFiltersInput {
 type Mutation {
   createPost(createPostInput: CreatePostInput!): MessageResponse!
   updatePost(updatePostInput: UpdatePostInput!): MessageResponse!
+  updatePostStatus(postId: Int!): MessageResponse!
   deletePost(postId: Int!): Boolean!
   createUser(createUserInput: CreateUserInput!): User!
   updateProfile(input: UpdateUserInput!): MessageResponse!

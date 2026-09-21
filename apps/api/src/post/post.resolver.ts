@@ -113,6 +113,18 @@ export class PostResolver {
     });
   }
 
+  @Mutation(() => MessageResponse)
+  async updatePostStatus(
+    @Args('postId', { type: () => Int }) postId: number,
+    @CurrentUser('sub')
+    userId: number,
+  ) {
+    return this.postService.updatePostStatus({
+      postId,
+      userId,
+    });
+  }
+
   @Mutation(() => Boolean)
   deletePost(
     @CurrentUser('sub')

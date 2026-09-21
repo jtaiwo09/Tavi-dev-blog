@@ -135,7 +135,7 @@ const PostListItem = ({ post }: Props) => {
           <Link
             href={href}
             aria-label={`Read ${post.title}`}
-            className="group/image relative block aspect-video overflow-hidden bg-surface-subtle md:aspect-4/3"
+            className="group/image relative block aspect-video w-full overflow-hidden bg-surface-subtle"
           >
             <Image
               src={post.thumbnail || "/no-image.jpeg"}
@@ -145,7 +145,7 @@ const PostListItem = ({ post }: Props) => {
               className="object-cover transition-transform duration-700 ease-standard group-hover/image:scale-[1.035]"
             />
 
-            <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-500 group-hover/image:bg-black/[0.04]" />
+            <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-500 group-hover/image:bg-black/4" />
 
             {isPublished && (
               <span className="absolute bottom-4 right-4 flex size-9 items-center justify-center rounded-full bg-background/95 text-foreground opacity-0 shadow-sm backdrop-blur transition-all duration-300 group-hover/image:opacity-100">
@@ -155,7 +155,7 @@ const PostListItem = ({ post }: Props) => {
           </Link>
 
           <div className="flex justify-end">
-            <PostActions postId={post.id} />
+            <PostActions postId={post.id} status={post.status} />
           </div>
         </div>
       </div>

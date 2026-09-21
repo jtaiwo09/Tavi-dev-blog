@@ -593,6 +593,59 @@ export class PostService {
     };
   }
 
+  async updatePostStatus({
+    postId,
+    userId,
+  }: {
+    postId: number;
+    userId: number;
+  }) {
+    // 1. Find the post
+    const existingPost = await this.prisma.post.findUnique({
+      where: {
+        id: postId,
+      },
+      select: {
+        id: true,
+        authorId: true,
+        status: true,
+      },
+    });
+
+    if (!existingPost) {
+      throw new NotFoundException('Post not found.');
+    }
+
+    if (existingPost.authorId !== userId) {
+      throw new ForbiddenException('You are not allowed to update this post.');
+    }
+
+    const nextStatus =
+      existingPost.status === PostStatus.PUBLISHED
+        ? PostStatus.DRAFT
+        : PostStatus.PUBLISHED;
+
+    const publishedAt = nextStatus === PostStatus.PUBLISHED ? new Date() : null;
+
+    // 5. Update only the fields relevant to publication
+    await this.prisma.post.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        status: nextStatus,
+        publishedAt,
+      },
+    });
+
+    return {
+      message:
+        nextStatus === PostStatus.PUBLISHED
+          ? 'Post published successfully!'
+          : 'Post unpublished successfully!',
+    };
+  }
+
   async delete({ postId, userId }: { postId: number; userId: number }) {
     const authorIdMatched = await this.prisma.post.findUnique({
       where: { id: postId, authorId: userId },
