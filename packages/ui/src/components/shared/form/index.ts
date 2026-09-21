@@ -12,3 +12,4 @@ export { default as FormFileUpload } from "./form-file-upload";
 export { default as FormPasswordInput } from "./form-password-input";
 export { default as FormSearchInput } from "./form-search-input";
 export { default as FormButton } from "./form-button";
+export { default as FormMultiSelect } from "./form-multi-select";

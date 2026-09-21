@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import {
   FormField,
   FormInput,
+  FormMultiSelect,
   FormSelect,
   FormTextarea,
 } from "@repo/ui/components/shared/form";
@@ -154,11 +155,15 @@ const UpsertPostForm = ({
               error={state?.errors?.tags}
               description="Select up to 3 tags that describe this article."
             >
-              <FormSelect
+              <FormMultiSelect
                 id="tags"
                 name="tags"
                 options={tagOptions}
                 placeholder="Select tags"
+                maxSelections={3}
+                onMaxReached={(max) => {
+                  toast.info(`You can only select ${max} options`);
+                }}
               />
             </FormField>
 
