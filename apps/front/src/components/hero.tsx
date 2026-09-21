@@ -15,7 +15,7 @@ const Hero = () => {
               <span className="h-px w-8 bg-brand" />
 
               <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">
-                Independent developer journal
+                Developer journal
               </span>
             </div>
 
