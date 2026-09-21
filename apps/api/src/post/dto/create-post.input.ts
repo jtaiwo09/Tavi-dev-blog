@@ -2,6 +2,7 @@ import { Field, Int, InputType } from '@nestjs/graphql';
 import {
   ArrayMaxSize,
   IsArray,
+  IsBase64,
   IsEnum,
   IsInt,
   IsOptional,
@@ -28,6 +29,7 @@ export class CreatePostInput {
   @Field()
   @IsString()
   @MinLength(20)
+  @IsBase64()
   content!: string;
 
   @Field(() => Int)

@@ -88,7 +88,10 @@ export const authFetchGraphQL = async (query: string, variables = {}) => {
           }
         : {}),
     },
-    body,
+    body: JSON.stringify({
+      query,
+      variables,
+    }),
   });
 
   return parseGraphQLResponse(response);

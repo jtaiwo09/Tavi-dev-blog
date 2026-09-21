@@ -54,7 +54,7 @@ model Post {
   id          Int        @id @default(autoincrement())
   title       String
   excerpt     String?
-  content     String     @db.Text
+  content     String
   slug        String     @unique
   thumbnail   String?
   status      PostStatus @default(DRAFT)

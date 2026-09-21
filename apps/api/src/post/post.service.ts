@@ -12,6 +12,7 @@ import { PostFiltersInput } from './dto/post-filters.input';
 import { calculateArticleStats } from './utils/article-stats';
 import { PostStatus } from 'src/generated/prisma/enums';
 import { Prisma } from 'src/generated/prisma/client';
+import { decodeBase64Content } from 'src/common/utils/base64.util';
 
 export function slugify(text: string): string {
   return text
@@ -296,6 +297,8 @@ export class PostService {
   }) {
     const { categoryId, tags = [], ...postData } = createPostInput;
 
+    const rawContent = decodeBase64Content(postData.content);
+
     // 1. Enforce maximum of 3 tags
     if (tags.length > 3) {
       throw new BadRequestException('A post can have a maximum of 3 tags.');
@@ -359,7 +362,7 @@ export class PostService {
       data: {
         title: postData.title,
         excerpt: postData.excerpt ?? null,
-        content: postData.content,
+        content: rawContent,
         status,
         publishedAt,
         wordCount,
@@ -455,13 +458,13 @@ export class PostService {
       }
     }
 
-    // 4. Calculate content statistics
-    const contentToAnalyze = updatePostInput.content ?? existingPost.content;
+    const contentToAnalyze = updatePostInput.content
+      ? decodeBase64Content(updatePostInput.content)
+      : existingPost.content;
 
     const { wordCount, readingTimeMinutes } =
       calculateArticleStats(contentToAnalyze);
 
-    // 5. Handle publication status and publishedAt
     const previousStatus = existingPost.status;
     const nextStatus = updatePostInput.status ?? previousStatus;
 
