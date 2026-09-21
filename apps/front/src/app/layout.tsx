@@ -64,12 +64,14 @@ export const metadata: Metadata = {
     siteName: siteConfig.siteName,
     title: siteConfig.title,
     description: siteConfig.description,
+    images: siteConfig.ogImages,
   },
 
   twitter: {
     card: "summary_large_image",
     title: siteConfig.title,
     description: siteConfig.description,
+    images: siteConfig.twitterImages,
   },
 
   robots: {

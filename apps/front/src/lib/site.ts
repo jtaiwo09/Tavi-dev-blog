@@ -24,4 +24,12 @@ export const siteConfig = {
     "NestJS",
     "GraphQL",
   ],
+  ogImages: [
+    {
+      url: "/seo/tavi-og-image.png",
+      width: 1200,
+      height: 630,
+    },
+  ],
+  twitterImages: ["/seo/tavi-og-image.png"],
 };
