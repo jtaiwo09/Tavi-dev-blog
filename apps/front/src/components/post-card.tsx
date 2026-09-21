@@ -116,7 +116,7 @@ const PostCard = ({
 
         <div className="relative order-first aspect-video overflow-hidden bg-surface-subtle md:order-last md:aspect-[4/3]">
           <Image
-            src={thumbnail || "/no-image.png"}
+            src={thumbnail || "/no-image.jpeg"}
             alt={title ?? "Blog post"}
             fill
             className="object-cover transition-transform duration-700 ease-standard group-hover:scale-[1.035]"

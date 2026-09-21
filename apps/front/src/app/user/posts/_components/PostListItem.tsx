@@ -135,10 +135,10 @@ const PostListItem = ({ post }: Props) => {
           <Link
             href={href}
             aria-label={`Read ${post.title}`}
-            className="group/image relative block aspect-[16/9] overflow-hidden bg-surface-subtle md:aspect-[4/3]"
+            className="group/image relative block aspect-video overflow-hidden bg-surface-subtle md:aspect-4/3"
           >
             <Image
-              src={post.thumbnail || "/no-image.png"}
+              src={post.thumbnail || "/no-image.jpeg"}
               alt={post.title}
               fill
               sizes="(max-width: 768px) 100vw, 288px"

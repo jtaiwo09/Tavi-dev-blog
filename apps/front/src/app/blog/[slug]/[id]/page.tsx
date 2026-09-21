@@ -99,7 +99,7 @@ const PostPage = async ({ params }: Props) => {
             </div>
 
             {/* Title */}
-            <h1 className="text-balance max-w-6xl font-serif text-4xl font-medium md:leading-[0.98] md:tracking-[-0.02em] text-foreground sm:text-6xl lg:text-[5rem]">
+            <h1 className="text-balance max-w-6xl font-serif text-3xl font-medium md:leading-[0.98] md:tracking-[-0.02em] text-foreground sm:text-6xl lg:text-[4.5rem]">
               {post.title}
             </h1>
 
@@ -132,25 +132,27 @@ const PostPage = async ({ params }: Props) => {
       </header>
 
       {/* Hero image */}
-      <section className="content-container py-8 sm:py-10 lg:py-12">
-        <div className="mx-auto max-w-6xl">
-          <div className="relative aspect-16/8 overflow-hidden bg-surface-subtle">
-            <Image
-              src={post.thumbnail || "/no-image.png"}
-              alt={post.title}
-              fill
-              priority
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1152px"
-            />
+      {post.thumbnail && (
+        <section className="content-container py-8 sm:py-10 lg:py-12">
+          <div className="mx-auto max-w-6xl">
+            <div className="relative aspect-16/8 overflow-hidden bg-surface-subtle">
+              <Image
+                src={post.thumbnail}
+                alt={post.title}
+                fill
+                priority
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1152px"
+              />
 
-            <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/10 via-transparent to-transparent" />
+              <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/10 via-transparent to-transparent" />
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Article */}
-      <section className="content-container pb-16 sm:pb-24 lg:pb-32">
+      <section className="content-container py-16">
         <div className="mx-auto max-w-5xl">
           <article className="reading-container">
             <SanitizedContent content={post.content} />
