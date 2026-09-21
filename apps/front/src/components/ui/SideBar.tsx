@@ -1,10 +1,10 @@
 "use client";
 
 import { cn } from "@repo/ui/lib/utils";
-import Link from "next/link";
 import { PropsWithChildren, ReactNode, useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { useSidebar } from "../navigation/sidebar-context";
+import { Brand } from "../brand";
 
 type Props = PropsWithChildren<{
   triggerIcon: ReactNode;
@@ -38,19 +38,10 @@ const SideBar = ({ children, triggerIcon, triggerClassName }: Props) => {
           triggerClassName,
         )}
       >
-        <Link
-          href="/"
+        <Brand
           onClick={closeSidebar}
           className="group flex items-center gap-3"
-        >
-          <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand text-xs font-bold text-brand-foreground">
-            T
-          </span>
-
-          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground transition-colors group-hover:text-foreground">
-            Tavi / Dev
-          </span>
-        </Link>
+        />
 
         <button
           type="button"
@@ -102,15 +93,7 @@ const SideBar = ({ children, triggerIcon, triggerClassName }: Props) => {
         )}
       >
         <div className="flex h-20 shrink-0 items-center justify-between border-b border-border/70 px-5">
-          <Link href="/" className="group flex items-center gap-3">
-            <span className="flex size-8 items-center justify-center rounded-full bg-brand text-xs font-bold text-brand-foreground">
-              T
-            </span>
-
-            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Tavi / Dev
-            </span>
-          </Link>
+          <Brand className="group flex items-center gap-3" />
 
           <button
             type="button"
