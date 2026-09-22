@@ -1,6 +1,5 @@
 import {
   EmailLayout,
-  EmailHeading,
   EmailText,
   EmailButton,
   EmailDivider,
@@ -12,27 +11,28 @@ interface VerificationEmailProps {
   verificationUrl: string;
 }
 
-export function VerificationEmail({
-  name,
-  verificationUrl,
-}: VerificationEmailProps) {
+function VerificationEmail({ name, verificationUrl }: VerificationEmailProps) {
   return (
-    <EmailLayout preview="Verify your email address">
-      <EmailHeading>Welcome, {name}!</EmailHeading>
+    <EmailLayout preview="Verify your email to get started on Tavi / Dev">
+      {/* <EmailHeading>Welcome to Tavi / Dev!</EmailHeading> */}
 
       <EmailText>Hi {name},</EmailText>
 
       <EmailText>
-        Thanks for creating an account with us. Please verify your email address
-        by clicking the button below.
+        We’re excited to have you here! Please confirm your email address below
+        to activate your account, publish articles, and join the conversation.
       </EmailText>
 
-      <EmailButton href={verificationUrl}>Verify Email</EmailButton>
+      <EmailButton href={verificationUrl}>Verify Email Address</EmailButton>
 
-      <EmailText>This verification link will expire in 24 hours.</EmailText>
+      <EmailText>
+        This link is valid for 24 hours. For security reasons, unverified links
+        expire automatically.
+      </EmailText>
 
       <EmailText muted>
-        If you didn't create this account, you can safely ignore this email.
+        If you didn't create an account with Tavi / Dev, you can safely ignore
+        this email.
       </EmailText>
 
       <EmailDivider />
@@ -41,3 +41,10 @@ export function VerificationEmail({
     </EmailLayout>
   );
 }
+
+VerificationEmail.PreviewProps = {
+  name: 'Taiwo',
+  verificationUrl: 'http://localhost:3000/auth/verify?token=mock-token',
+} as VerificationEmailProps;
+
+export default VerificationEmail;

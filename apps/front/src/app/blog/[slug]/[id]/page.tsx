@@ -2,7 +2,6 @@ import { fetchPostById } from "@/lib/actions/postActions";
 import Image from "next/image";
 import SanitizedContent from "./_components/SanitizedContent";
 import Comments from "./_components/comments";
-import { getSession } from "@/lib/session";
 import Like from "./_components/like";
 import { notFound } from "next/navigation";
 import { formatDate } from "@/lib/utils";
@@ -13,6 +12,7 @@ import {
 } from "@repo/ui/components/ui/avatar";
 import { siteConfig } from "@/lib/site";
 import type { Metadata } from "next";
+import { getCurrentUser } from "@/lib/actions/users";
 
 type Props = {
   params: Promise<{
@@ -79,7 +79,7 @@ const PostPage = async ({ params }: Props) => {
     notFound();
   }
 
-  const session = await getSession();
+  const user = await getCurrentUser();
 
   const formattedDate = formatDate(post.createdAt, { month: "long" });
 
@@ -160,7 +160,7 @@ const PostPage = async ({ params }: Props) => {
 
           {/* Engagement */}
           <div className="mt-14 border-y border-border py-5 sm:mt-20">
-            <Like postId={post.id} user={session?.user} />
+            <Like postId={post.id} user={user} />
           </div>
 
           {/* Discussion */}
@@ -181,7 +181,7 @@ const PostPage = async ({ params }: Props) => {
               </div>
             </div>
 
-            <Comments user={session?.user} postId={post.id} slug={slug} />
+            <Comments user={user} postId={post.id} slug={slug} />
           </section>
         </div>
       </section>

@@ -247,17 +247,6 @@ export class AuthService {
     return this.createAuthResponse(user);
   }
 
-  async generateToken(user: User) {
-    this.assertAccountCanAuthenticate(user);
-
-    const accessToken = await this.issueAccessToken({
-      sub: user.id,
-      email: user.email,
-    });
-
-    return { accessToken };
-  }
-
   async validateUser(userId: number) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },

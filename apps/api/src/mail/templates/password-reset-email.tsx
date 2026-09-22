@@ -12,10 +12,7 @@ interface PasswordResetEmailProps {
   resetUrl: string;
 }
 
-export function PasswordResetEmail({
-  name,
-  resetUrl,
-}: PasswordResetEmailProps) {
+function PasswordResetEmail({ name, resetUrl }: PasswordResetEmailProps) {
   return (
     <EmailLayout preview="Reset your Tavi Dev password">
       <EmailHeading>Reset your password</EmailHeading>
@@ -45,3 +42,10 @@ export function PasswordResetEmail({
     </EmailLayout>
   );
 }
+
+PasswordResetEmail.PreviewProps = {
+  name: 'Taiwo',
+  resetUrl: 'http://localhost:3000/auth/verify?token=mock-token',
+} as PasswordResetEmailProps;
+
+export default PasswordResetEmail;

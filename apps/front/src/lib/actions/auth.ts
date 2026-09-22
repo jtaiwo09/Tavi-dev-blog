@@ -98,9 +98,9 @@ export async function signIn(
       input: validatedFields.data,
     });
 
-    const { user, accessToken, message } = data.signIn;
+    const { accessToken, message } = data.signIn;
 
-    await createSession({ user, accessToken });
+    await createSession(accessToken);
 
     revalidatePath("/");
     return {

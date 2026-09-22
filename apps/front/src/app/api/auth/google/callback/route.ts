@@ -9,7 +9,6 @@ export async function GET(req: NextRequest) {
   const accessToken = searchParams.get("accessToken");
   const userId = searchParams.get("userId");
   const name = searchParams.get("name");
-  const avatar = searchParams.get("avatar");
 
   if (!accessToken || !userId || !name) throw new Error("Google oauth failed!");
 
@@ -21,13 +20,6 @@ export async function GET(req: NextRequest) {
 
   if (res.status === 401) throw new Error("jwt verification failed!");
 
-  await createSession({
-    user: {
-      id: userId,
-      name,
-      avatar: avatar ?? undefined,
-    },
-    accessToken,
-  });
+  await createSession(accessToken);
   redirect("/");
 }

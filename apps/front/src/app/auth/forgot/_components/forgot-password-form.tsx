@@ -15,7 +15,7 @@ const ForgotPasswordForm = () => {
 
   if (state?.success) {
     return (
-      <div className="rounded-xl border border-success/20 bg-success-subtle p-5">
+      <div className="border border-success/20 bg-success-subtle px-4 py-3">
         <p className="text-sm font-medium text-success">Check your email</p>
 
         <p className="mt-1 text-sm leading-6 text-muted-foreground">

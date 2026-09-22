@@ -17,12 +17,20 @@ import {
 } from "@/lib/zodSchemas/schema";
 import { uploadAvatar } from "@/lib/upload";
 import { revalidatePath } from "next/cache";
-import { deleteSession } from "@/lib/session";
+import { deleteSession, getSession } from "@/lib/session";
 import { getErrorMessage } from "../utils";
+import type { User } from "../types/modelTypes";
 
 export async function getCurrentUser() {
-  const data = await authFetchGraphQL(print(GET_USER));
-  return data.user;
+  const token = await getSession();
+  if (!token) return null;
+
+  try {
+    const data = await authFetchGraphQL<{ user: User | null }>(print(GET_USER));
+    return data?.user ?? null;
+  } catch (error) {
+    return null;
+  }
 }
 
 export async function updateProfile(

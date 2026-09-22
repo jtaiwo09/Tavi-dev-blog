@@ -65,34 +65,35 @@ export const fetchGraphQL = async (query: string, variables = {}) => {
   return parseGraphQLResponse(response);
 };
 
-export const authFetchGraphQL = async (query: string, variables = {}) => {
-  const session = await getSession();
+export const authFetchGraphQL = async <T = any>(
+  query: string,
+  variables: Record<string, any> = {},
+): Promise<T> => {
+  const token = await getSession();
 
   const body = JSON.stringify({
     query,
     variables,
   });
 
+  const payloadBytes = new TextEncoder().encode(body).length;
   console.log("GraphQL request size:", {
-    bytes: new TextEncoder().encode(body).length,
-    kb: (new TextEncoder().encode(body).length / 1024).toFixed(2),
+    bytes: payloadBytes,
+    kb: (payloadBytes / 1024).toFixed(2),
   });
 
   const response = await fetch(`${BACKEND_URL}/graphql`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...(session?.accessToken
+      ...(token
         ? {
-            Authorization: `Bearer ${session.accessToken}`,
+            Authorization: `Bearer ${token}`,
           }
         : {}),
     },
-    body: JSON.stringify({
-      query,
-      variables,
-    }),
+    body,
   });
 
-  return parseGraphQLResponse(response);
+  return parseGraphQLResponse(response) as Promise<T>;
 };

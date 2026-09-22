@@ -1,17 +1,17 @@
 import { getPostComments } from "@/lib/actions/commentActions";
 import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
-import { SessionUser } from "@/lib/session";
 import Link from "next/link";
 
 import Pagination from "@/components/pagination";
 import CommentCard from "./commentCard";
 import AddComment from "./addComment";
 import { Button } from "@repo/ui/components/ui/button";
+import type { User } from "@/lib/types/modelTypes";
 
 type Props = {
   postId: number;
   slug: string;
-  user?: SessionUser;
+  user?: User | null;
   page?: number;
 };
 

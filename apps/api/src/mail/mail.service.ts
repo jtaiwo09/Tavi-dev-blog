@@ -7,9 +7,9 @@ import {
   type IMailProvider,
 } from './interfaces/mail-provider.interface';
 
-import { VerificationEmail } from './templates/verification-email';
 import React from 'react';
-import { PasswordResetEmail } from './templates/password-reset-email';
+import VerificationEmail from './templates/verification-email';
+import PasswordResetEmail from './templates/password-reset-email';
 
 interface SendVerificationEmailOptions {
   email: string;

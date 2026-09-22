@@ -1,16 +1,16 @@
 "use client";
 
 import { getPostLikeData, likePost, unLikePost } from "@/lib/actions/like";
-import { SessionUser } from "@/lib/session";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as SolidHeartIcon } from "@heroicons/react/20/solid";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { cn } from "@repo/ui/lib/utils";
+import type { User } from "@/lib/types/modelTypes";
 
 type Props = {
   postId: number;
-  user?: SessionUser;
+  user?: User | null;
 };
 
 const Like = ({ postId, user }: Props) => {
