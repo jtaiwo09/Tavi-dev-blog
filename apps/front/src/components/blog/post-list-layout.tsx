@@ -56,7 +56,7 @@ const PostListLayout = ({
             alt={title}
             fill
             sizes="(max-width: 768px) 100vw, 288px"
-            className="object-cover transition-transform duration-700 ease-standard group-hover/image:scale-[1.035]"
+            className="object-cover"
           />
 
           <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-500 group-hover/image:bg-black/[0.04]" />
