@@ -99,7 +99,7 @@ const PostPage = async ({ params }: Props) => {
             </div>
 
             {/* Title */}
-            <h1 className="text-balance max-w-6xl font-serif text-3xl font-medium md:leading-[0.98] md:tracking-[-0.02em] text-foreground sm:text-6xl lg:text-[4.5rem]">
+            <h1 className="text-balance max-w-6xl font-serif text-2xl font-medium md:leading-[0.98] md:tracking-[-0.02em] text-foreground sm:text-6xl lg:text-[4.5rem]">
               {post.title}
             </h1>
 

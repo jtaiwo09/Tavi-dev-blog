@@ -68,7 +68,7 @@ const PostListItem = ({ post }: Props) => {
 
       {/* Title */}
       <Link href={href} className="block">
-        <h3 className="mt-3 max-w-3xl text-balance font-serif text-2xl font-medium leading-[1.08] tracking-[-0.025em] text-foreground transition-colors duration-200 group-hover:text-brand sm:text-3xl">
+        <h3 className="mt-3 max-w-3xl text-balance font-serif text-2xl font-medium leading-tight  tracking-[-0.01em] text-foreground transition-colors duration-200 group-hover:text-brand sm:text-3xl">
           {post.title}
         </h3>
       </Link>
