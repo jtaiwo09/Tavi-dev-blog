@@ -93,7 +93,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="scroll-pt-18">
       <body
         id="top"
         className={`${inter.variable} ${newsreader.variable} ${jetBrainsMono.variable} antialiased`}
@@ -105,8 +105,9 @@ export default function RootLayout({
             <NavbarContainer />
           </SidebarProvider>
 
-          <main className="pt-18">{children}</main>
+          <main className="pt-14 md:pt-18">{children}</main>
           <Footer />
+
           <Toaster richColors />
         </Providers>
       </body>

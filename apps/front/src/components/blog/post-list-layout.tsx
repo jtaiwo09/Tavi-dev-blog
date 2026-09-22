@@ -8,7 +8,7 @@ type Props = {
   title: string;
   thumbnail?: string | null;
   children: ReactNode;
-  footer?: ReactNode;
+  thumbnailFooter?: ReactNode;
   showReadAction?: boolean;
 };
 
@@ -17,56 +17,41 @@ const PostListLayout = ({
   title,
   thumbnail,
   children,
-  footer,
+  thumbnailFooter,
   showReadAction = true,
 }: Props) => {
   return (
-    <article className="group border-b border-border last:border-b-0">
+    <article className="group border-b border-border">
       <div className="grid gap-6 py-8 sm:gap-8 sm:py-9 md:grid-cols-[minmax(0,1fr)_15rem] lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-12 lg:py-10">
         {/* Content */}
-        <div className="min-w-0">
-          {children}
+        <div className="min-w-0">{children}</div>
 
-          {/* Footer */}
-          {footer && (
-            <div className="mt-5 flex flex-wrap items-center gap-4">
-              {footer}
+        {/* Thumbnail + optional actions */}
+        <div className="order-first flex flex-col gap-3 sm:order-last">
+          <Link
+            href={href}
+            aria-label={`Read ${title}`}
+            className="group/image relative block aspect-video w-full overflow-hidden bg-surface-subtle"
+          >
+            <Image
+              src={thumbnail || "/no-image.jpeg"}
+              alt={title}
+              fill
+              sizes="(max-width: 768px) 100vw, 288px"
+              className="object-cover"
+            />
 
-              {showReadAction && (
-                <Link
-                  href={href}
-                  className="ml-auto hidden items-center gap-1.5 text-xs font-medium text-foreground transition-colors hover:text-brand sm:inline-flex"
-                >
-                  Read
-                  <ArrowUpRightIcon className="size-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                </Link>
-              )}
-            </div>
-          )}
+            <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-500 group-hover/image:bg-black/4" />
+
+            {showReadAction && (
+              <span className="absolute bottom-4 right-4 flex size-9 items-center justify-center rounded-full bg-background/95 text-foreground opacity-0 shadow-sm backdrop-blur transition-all duration-300 group-hover/image:opacity-100">
+                <ArrowUpRightIcon className="size-4" />
+              </span>
+            )}
+          </Link>
+
+          {thumbnailFooter}
         </div>
-
-        {/* Thumbnail */}
-        <Link
-          href={href}
-          aria-label={`Read ${title}`}
-          className="group/image relative order-first block aspect-video w-full overflow-hidden bg-surface-subtle sm:order-last"
-        >
-          <Image
-            src={thumbnail || "/no-image.jpeg"}
-            alt={title}
-            fill
-            sizes="(max-width: 768px) 100vw, 288px"
-            className="object-cover"
-          />
-
-          <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-500 group-hover/image:bg-black/[0.04]" />
-
-          {showReadAction && (
-            <span className="absolute bottom-4 right-4 flex size-9 items-center justify-center rounded-full bg-background/95 text-foreground opacity-0 shadow-sm backdrop-blur transition-all duration-300 group-hover/image:opacity-100">
-              <ArrowUpRightIcon className="size-4" />
-            </span>
-          )}
-        </Link>
       </div>
     </article>
   );

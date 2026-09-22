@@ -84,7 +84,7 @@ const PostPage = async ({ params }: Props) => {
   const formattedDate = formatDate(post.createdAt, { month: "long" });
 
   return (
-    <main className="min-h-screen bg-background">
+    <section className="min-h-screen bg-background">
       {/* Article header */}
       <header className="border-b border-border">
         <div className="content-container">
@@ -185,7 +185,7 @@ const PostPage = async ({ params }: Props) => {
           </section>
         </div>
       </section>
-    </main>
+    </section>
   );
 };
 

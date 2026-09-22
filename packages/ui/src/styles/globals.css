@@ -3,7 +3,7 @@
 @source "../components/**/*.{ts,tsx}";
 
 @theme {
-  --height-screen: 100dvh;
+  /* --height-screen: 100dvh; */
   /* ─────────────────────────────────────────────
      Typography
      ───────────────────────────────────────────── */

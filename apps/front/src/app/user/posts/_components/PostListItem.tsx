@@ -26,6 +26,11 @@ const PostListItem = ({ post }: Props) => {
       title={post.title}
       thumbnail={post.thumbnail}
       showReadAction={isPublished}
+      thumbnailFooter={
+        <div className="flex justify-end">
+          <PostActions postId={post.id} status={post.status} />
+        </div>
+      }
     >
       {/* Metadata */}
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-medium uppercase tracking-[0.12em]">
@@ -97,11 +102,6 @@ const PostListItem = ({ post }: Props) => {
             <ChatBubbleLeftIcon className="size-3.5" />
             {post._count.comments}
           </span>
-        </div>
-
-        {/* Admin actions */}
-        <div className="ml-auto">
-          <PostActions postId={post.id} status={post.status} />
         </div>
       </div>
     </PostListLayout>
