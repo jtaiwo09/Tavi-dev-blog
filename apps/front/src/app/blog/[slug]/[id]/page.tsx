@@ -152,7 +152,7 @@ const PostPage = async ({ params }: Props) => {
       )}
 
       {/* Article */}
-      <section className="content-container py-16">
+      <section className="content-container md:py-16">
         <div className="mx-auto max-w-5xl">
           <article className="reading-container">
             <SanitizedContent content={post.content} />

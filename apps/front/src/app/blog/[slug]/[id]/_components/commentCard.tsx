@@ -13,7 +13,7 @@ type Props = {
 
 const CommentCard = ({ comment }: Props) => {
   return (
-    <article className="border-b border-border py-7 sm:py-8">
+    <article className="border-b border-border py-7 sm:py-8 last:border-b-0">
       <div className="flex items-start gap-4">
         <Avatar className="size-9 shrink-0">
           <AvatarImage

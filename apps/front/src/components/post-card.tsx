@@ -1,7 +1,11 @@
 import { Post } from "@/lib/types/modelTypes";
 import Image from "next/image";
 import Link from "next/link";
-import { ClockIcon } from "@heroicons/react/24/outline";
+import {
+  ClockIcon,
+  HeartIcon,
+  ChatBubbleLeftIcon,
+} from "@heroicons/react/24/outline";
 import { createExcerpt, formatDate } from "@/lib/utils";
 import PostListLayout from "./blog/post-list-layout";
 
@@ -18,13 +22,16 @@ const PostCard = ({
   author,
   category,
   readingTimeMinutes,
-  wordCount,
+  _count,
 }: Props) => {
   const href = `/blog/${slug}/${id}`;
 
   const formattedDate = publishedAt ? formatDate(publishedAt) : "";
 
   const excerpt = postExcerpt?.trim() || createExcerpt(content);
+
+  const likesCount = _count?.likes ?? 0;
+  const commentsCount = _count?.comments ?? 0;
 
   return (
     <PostListLayout
@@ -69,7 +76,7 @@ const PostCard = ({
       )}
 
       {/* Footer */}
-      <div className="mt-5 flex flex-wrap items-center gap-4">
+      <div className="mt-5 flex flex-wrap items-center gap-3 justify-between md:justify-start">
         {/* Author */}
         <div className="flex min-w-0 items-center gap-2.5">
           {author?.avatar ? (
@@ -98,25 +105,33 @@ const PostCard = ({
 
         {/* Reading time */}
         {readingTimeMinutes != null && (
-          <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
-            <ClockIcon className="size-3.5" />
-            {readingTimeMinutes} min read
-          </span>
-        )}
-
-        {/* Word count */}
-        {wordCount != null && (
           <>
+            <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+              <ClockIcon className="size-3.5" />
+              {readingTimeMinutes} min read
+            </span>
+
             <span
               aria-hidden="true"
               className="size-1 rounded-full bg-border"
             />
-
-            <span className="text-xs text-muted-foreground">
-              {wordCount.toLocaleString()} words
-            </span>
           </>
         )}
+
+        {/* Likes */}
+        <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+          <HeartIcon className="size-3.5" />
+          {likesCount}
+        </span>
+
+        {/* Divider */}
+        <span aria-hidden="true" className="size-1 rounded-full bg-border" />
+
+        {/* Comments */}
+        <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+          <ChatBubbleLeftIcon className="size-3.5" />
+          {commentsCount}
+        </span>
       </div>
     </PostListLayout>
   );
