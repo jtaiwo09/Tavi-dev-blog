@@ -1,21 +1,20 @@
 import { Post } from "@/lib/types/modelTypes";
-import Pagination from "./pagination";
+import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 import PostCard from "./post-card";
 
 type Props = {
   posts: Post[];
-  currentPage: number;
-  totalPages: number;
 };
 
-const Posts = ({ posts, currentPage, totalPages }: Props) => {
+const Posts = ({ posts }: Props) => {
   return (
     <section
       id="latest-posts"
-      className="content-container scroll-mt-20 py-16 sm:py-20 lg:py-28"
+      className="content-container scroll-mt-20 py-16 lg:py-20"
     >
       {/* Section heading */}
-      <header className="mb-2 flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-end sm:justify-between">
+      <header className="mb-2 flex flex-col border-b border-border pb-6 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand">
             The journal
@@ -26,29 +25,21 @@ const Posts = ({ posts, currentPage, totalPages }: Props) => {
           </h2>
         </div>
 
-        {totalPages > 0 && (
-          <p className="text-xs text-muted-foreground">
-            Page {currentPage} of {totalPages}
-          </p>
-        )}
+        <Link
+          href="/blog"
+          className="mt-5 inline-flex w-fit items-center gap-2 border-b border-foreground/30 pb-1 text-sm font-medium text-foreground transition-colors hover:border-brand hover:text-brand sm:mt-0"
+        >
+          View all stories
+          <ArrowUpRightIcon className="size-4" />
+        </Link>
       </header>
 
       {posts.length > 0 ? (
-        <>
-          <div>
-            {posts.map((post) => (
-              <PostCard key={post.id} {...post} />
-            ))}
-          </div>
-
-          {totalPages > 1 && (
-            <Pagination
-              className="mt-10 border-t border-border pt-8"
-              currentPage={currentPage}
-              totalPages={totalPages}
-            />
-          )}
-        </>
+        <div>
+          {posts.map((post) => (
+            <PostCard key={post.id} {...post} />
+          ))}
+        </div>
       ) : (
         <div className="border-y border-border py-20 text-center">
           <p className="font-serif text-2xl text-foreground">
