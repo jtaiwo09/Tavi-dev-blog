@@ -275,27 +275,6 @@
   .article-content tr:nth-child(even) td {
     background: hsl(var(--surface-subtle) / 0.35);
   }
-
-  /* ─────────────────────────────────────────────────────────────────────────
-     Mobile
-     ─────────────────────────────────────────────────────────────────────── */
-
-  @media (max-width: 640px) {
-    .article-content {
-      font-size: 1rem;
-      line-height: 1.8;
-    }
-
-    .article-content pre {
-      margin-inline: -0.5rem;
-      border-radius: 0.75rem;
-      padding: 1rem;
-    }
-
-    .article-content blockquote {
-      padding-left: 1rem;
-    }
-  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -772,9 +751,18 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 @media (max-width: 640px) {
+  .article-content {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
   .article-content pre {
-    margin-inline: -0.5rem;
-    border-radius: 0.75rem;
-    padding: 1rem;
+    margin-inline: -0.3rem;
+    border-radius: 0.65rem;
+    padding: 0.5rem;
+  }
+
+  .article-content blockquote {
+    padding-left: 1rem;
   }
 }
