@@ -28,7 +28,7 @@ const Comments = async ({ postId, slug, user, page = 1 }: Props) => {
     <div>
       {user ? (
         <div className="border-b border-border pb-8">
-          <AddComment slug={slug} user={user} postId={postId} />
+          <AddComment slug={slug} postId={postId} />
         </div>
       ) : (
         <div className="border-b border-border pb-8">

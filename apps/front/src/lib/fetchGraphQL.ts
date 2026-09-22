@@ -12,27 +12,13 @@ export class GraphQLError extends Error {
 }
 
 const parseGraphQLResponse = async (response: Response) => {
-  const contentType = response.headers.get("content-type");
   const responseText = await response.text();
-
-  console.log("========== GRAPHQL RESPONSE ==========");
-  console.log("URL:", response.url);
-  console.log("STATUS:", response.status);
-  console.log("STATUS TEXT:", response.statusText);
-  console.log("CONTENT TYPE:", contentType);
-  console.log("BODY:", responseText.slice(0, 3000));
-  console.log("======================================");
 
   let result: any;
 
   try {
     result = JSON.parse(responseText);
   } catch {
-    console.error(
-      "GraphQL returned a non-JSON response:",
-      responseText.slice(0, 3000),
-    );
-
     throw new Error(
       `GraphQL endpoint returned ${response.status} ${response.statusText} instead of JSON`,
     );

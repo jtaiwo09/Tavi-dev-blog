@@ -14,17 +14,15 @@ import { toast } from "@repo/ui/components/ui/sonner";
 import { FormField, FormTextarea } from "@repo/ui/components/shared/form";
 
 import { saveComment } from "@/lib/actions/commentActions";
-import { SessionUser } from "@/lib/session";
 import { cn } from "@repo/ui/lib/utils";
 
 type Props = {
   postId: number;
   slug: string;
-  user: SessionUser;
   className?: string;
 };
 
-const AddComment = ({ postId, slug, user, className }: Props) => {
+const AddComment = ({ postId, slug, className }: Props) => {
   const [state, action, isPending] = useActionState(saveComment, undefined);
 
   const [open, setOpen] = useState(false);

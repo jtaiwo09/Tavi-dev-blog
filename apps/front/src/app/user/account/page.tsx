@@ -2,9 +2,14 @@ import AccountForm from "@/components/account/account-form";
 import AccountSecurity from "@/components/account/account-security";
 import DangerZone from "@/components/account/danger-zone";
 import { getCurrentUser } from "@/lib/actions/users";
+import { redirect } from "next/navigation";
 
 export default async function AccountPage() {
   const user = await getCurrentUser();
+
+  if (!user) {
+    redirect("/auth/signin");
+  }
 
   return (
     <main className="content-container">

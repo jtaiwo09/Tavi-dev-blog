@@ -1,0 +1,17 @@
+
+> @repo/api@0.0.1 build /Users/taiwojoseph/Desktop/projects/blog-turborepo/apps/api
+> pnpm db:deploy && nest build
+
+
+> @repo/api@0.0.1 db:deploy /Users/taiwojoseph/Desktop/projects/blog-turborepo/apps/api
+> prisma migrate deploy
+
+[2mLoaded Prisma config from prisma.config.ts.
+[22m
+[2mPrisma schema loaded from prisma/schema.prisma.[22m
+[2mDatasource "db": PostgreSQL database "blog", schema "public" at "localhost:5432"[22m
+
+13 migrations found in prisma/migrations
+
+
+[32mNo pending migrations to apply.[39m
